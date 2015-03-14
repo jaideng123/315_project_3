@@ -24,6 +24,7 @@ public class Circuit {
     
     public void getFromFile(int populationIndex)throws IOException{
         //Fix for generic case
+        // path should be change.
         String path = "C:\\Users\\Eric C C\\Documents\\NetBeansProjects\\LogicGA\\src\\logicga\\Circuit0.txt" ;
         FileReader fr = new FileReader(path);
         BufferedReader textReader = new BufferedReader(fr);
