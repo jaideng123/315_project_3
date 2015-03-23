@@ -38,7 +38,7 @@ public class GraphFrame extends JFrame {
 		JLabel yLabel = new JLabel("Fitness",0);
 		
 		countPanel.setLayout(new FlowLayout());
-		JTextArea genCount = new JTextArea("",1,10);
+		final JTextArea genCount = new JTextArea("",1,10);
 		
 		
 		
