@@ -1,3 +1,5 @@
+package logicga;
+
 import java.awt.*;
 
 import javax.swing.*;

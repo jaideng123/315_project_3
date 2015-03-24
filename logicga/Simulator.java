@@ -1,3 +1,4 @@
+package logicga;
 import java.util.Vector;
 
 /**
@@ -20,6 +21,17 @@ public class Simulator {
         }
         inputs = in;
         outputs = out;
+    }
+
+    public int test(Circuit circ){
+        int values[] = new int[circ.genes.size()];
+        java.util.Arrays.fill(values,-1);
+        int num_inputs = inputs[0].length;
+        for (int i = 0; i< circ.genes.size();++i){
+            circ.genes.elementAt(i);
+
+        }
+        return 0;
     }
 
 }
