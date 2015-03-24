@@ -43,11 +43,21 @@ public class Simulator {
                 values[current.outputNum] = values[current.inputs.firstElement()];
             }
             else if(current.type == "AND"){
-                values[current.outputNum] = (values[current.inputs.firstElement()] + values[current.inputs.elementAt(0)])/2;
+                values[current.outputNum] = (values[current.inputs.firstElement()] + values[current.inputs.elementAt(1)])/2;
             }
             else if(current.type == "OR"){
-                
+                if(values[current.inputs.firstElement()] == 1 || values[current.inputs.elementAt(1)] == 1)
+                    values[current.outputNum] = 1;
+                else
+                    values[current.outputNum] = 0;
             }
+            else if(current.type == "NOT"){
+                if(values[current.inputs.firstElement()] == 1)
+                    values[current.outputNum] = 0;
+                else
+                    values[current.outputNum] = 1;
+            }
+            
 
         }
         return 0;
