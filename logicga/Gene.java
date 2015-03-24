@@ -15,7 +15,7 @@ import java.util.Vector;
 public class Gene {
     int outputNum;
     String type;
-    Vector inputs = new Vector();
+    Vector<Integer> inputs = new Vector();
         
     public Gene(int output, String gateType, Vector input){
         outputNum = output;

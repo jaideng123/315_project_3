@@ -23,12 +23,31 @@ public class Simulator {
         outputs = out;
     }
 
-    public int test(Circuit circ){
+    public int simulate(Circuit circ){
         int values[] = new int[circ.genes.size()];
         java.util.Arrays.fill(values,-1);
-        int num_inputs = inputs[0].length;
+        int num_inputs = 0;
         for (int i = 0; i< circ.genes.size();++i){
-            circ.genes.elementAt(i);
+            Gene current = circ.genes.elementAt(i);
+            //fill in missing inputs
+            for(int j = 0;j<current.inputs.size();++j){
+                if(values[current.inputs.elementAt(j)] == -1){
+                    values[current.inputs.elementAt(j)] = inputs[0][num_inputs] ? 1 : 0;
+                    num_inputs++;
+                    if (num_inputs > inputs[0].length){
+                        return 0;
+                    }
+                }
+            }
+            if(current.type == "NONE"){
+                values[current.outputNum] = values[current.inputs.firstElement()];
+            }
+            else if(current.type == "AND"){
+                values[current.outputNum] = (values[current.inputs.firstElement()] + values[current.inputs.elementAt(0)])/2;
+            }
+            else if(current.type == "OR"){
+                
+            }
 
         }
         return 0;
