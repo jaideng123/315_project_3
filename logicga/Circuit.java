@@ -25,7 +25,7 @@ public class Circuit {
     public void getFromFile(int populationIndex)throws IOException{
         //Fix for generic case
         // path should be change.
-        String path = "../testcircuit/Circuit0.txt";
+        String path = "./testcircuit/Circuit0.txt";
         FileReader fr = new FileReader(path);
         BufferedReader textReader = new BufferedReader(fr);
         
