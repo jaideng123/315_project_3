@@ -25,6 +25,9 @@ public class Simulator {
 
     public int simulate(Circuit circ){
         Vector<int[]> results = new Vector<int[]>();
+        for (int i = 0; i < inputs.length; i++) {
+            results.addElement(test(circ,i));
+        }
         results.add(test(circ,0));
         boolean matched[] = new boolean[outputs[0].length];
         java.util.Arrays.fill(matched,false);
