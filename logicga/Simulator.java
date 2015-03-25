@@ -24,6 +24,30 @@ public class Simulator {
     }
 
     public int simulate(Circuit circ){
+        Vector<int[]> results = new Vector<int[]>();
+        results.add(test(circ,0));
+        boolean matched[] = new boolean[outputs[0].length];
+        java.util.Arrays.fill(matched,false);
+        int matching = 0;
+        //columns
+        for (int i = 0; i < circ.genes.size(); i++) {
+            //look at each output value we're looking for
+            for (int j = 0; j <outputs[0].length; j++) {
+                if(!matched[j]) {
+                    boolean is_match = true;
+                    for (int k = 0; k < results.size(); k++) {
+                        if (results.elementAt(k)[i] != (outputs[k][j] ? 1 : 0)){
+                            is_match = false;
+                        }
+                    }
+                    matched[j] = is_match;
+                }
+            }
+        }
+
+        return 0;
+    }
+    private int[] test(Circuit circ, int input){
         int values[] = new int[circ.genes.size()];
         java.util.Arrays.fill(values,-1);
         int num_inputs = 0;
@@ -32,10 +56,10 @@ public class Simulator {
             //fill in missing inputs
             for(int j = 0;j<current.inputs.size();++j){
                 if(values[current.inputs.elementAt(j)] == -1){
-                    values[current.inputs.elementAt(j)] = inputs[0][num_inputs] ? 1 : 0;
+                    values[current.inputs.elementAt(j)] = inputs[input][num_inputs] ? 1 : 0;
                     num_inputs++;
                     if (num_inputs > inputs[0].length){
-                        return 0;
+                        return new int[]{};
                     }
                 }
             }
@@ -57,10 +81,8 @@ public class Simulator {
                 else
                     values[current.outputNum] = 1;
             }
-            
-
         }
-        return 0;
+        return values;
     }
 
 }
