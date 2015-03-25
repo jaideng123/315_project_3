@@ -1,8 +1,19 @@
 package logicga;
 
 import java.io.IOException;
-
+/**
+*
+* @author Si Jine Roh
+*/
 public class LogicBF {
+	
+	/**
+	 * 
+	 * @param args
+	 * 
+	 * 
+	 * 
+	 */
 
 	public static void main(String[] args) {
 		System.out.println("Logic Non-GA, Brute Force START");
