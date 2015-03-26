@@ -28,58 +28,58 @@ public class Simulator {
         for (int i = 0; i < inputs.length; i++) {
             results.addElement(test(circ,i));
         }
-        results.add(test(circ,0));
         boolean matched[] = new boolean[outputs[0].length];
         java.util.Arrays.fill(matched,false);
         int matching = 0;
         //columns
-        for (int i = 0; i < circ.genes.size(); i++) {
+        for (int i = 0; i < circ.genes.size()*2; i++) {
             //look at each output value we're looking for
-            for (int j = 0; j <outputs[0].length; j++) {
+            for (int j = 0; j < outputs[0].length; j++) {
                 if(!matched[j]) {
                     boolean is_match = true;
                     for (int k = 0; k < results.size(); k++) {
-                        if (results.elementAt(k)[i] != (outputs[k][j] ? 1 : 0)){
+                        if (results.elementAt(k)[i] != (outputs[k][j] ? 1 : 0)) {
                             is_match = false;
                         }
                     }
                     matched[j] = is_match;
+                    if(is_match)
+                        matching++;
                 }
             }
         }
-
-        return 0;
+        return matching;
     }
     private int[] test(Circuit circ, int input){
-        int values[] = new int[circ.genes.size()];
+        int values[] = new int[circ.genes.size()*2];
         java.util.Arrays.fill(values,-1);
         int num_inputs = 0;
-        for (int i = 0; i< circ.genes.size();++i){
+        for (int i = 0; i< circ.genes.size();++i) {
             Gene current = circ.genes.elementAt(i);
             //fill in missing inputs
-            for(int j = 0;j<current.inputs.size();++j){
-                if(values[current.inputs.elementAt(j)] == -1){
+            for (int j = 0; j < current.inputs.size(); ++j) {
+                if (values[current.inputs.elementAt(j)] == -1) {
                     values[current.inputs.elementAt(j)] = inputs[input][num_inputs] ? 1 : 0;
                     num_inputs++;
-                    if (num_inputs > inputs[0].length){
+                    if (num_inputs > inputs[0].length) {
                         return new int[]{};
                     }
                 }
             }
-            if(current.type == "NONE"){
+            if (current.type == "NONE") {
                 values[current.outputNum] = values[current.inputs.firstElement()];
-            }
-            else if(current.type == "AND"){
-                values[current.outputNum] = (values[current.inputs.firstElement()] + values[current.inputs.elementAt(1)])/2;
-            }
-            else if(current.type == "OR"){
-                if(values[current.inputs.firstElement()] == 1 || values[current.inputs.elementAt(1)] == 1)
+            } else if (current.type == "AND") {
+                if (values[current.inputs.firstElement()] == 1 && values[current.inputs.elementAt(1)] == 1)
                     values[current.outputNum] = 1;
                 else
                     values[current.outputNum] = 0;
-            }
-            else if(current.type == "NOT"){
-                if(values[current.inputs.firstElement()] == 1)
+            } else if (current.type == "OR") {
+                if (values[current.inputs.firstElement()] == 1 || values[current.inputs.elementAt(1)] == 1)
+                    values[current.outputNum] = 1;
+                else
+                    values[current.outputNum] = 0;
+            } else if (current.type == "NOT") {
+                if (values[current.inputs.firstElement()] == 1)
                     values[current.outputNum] = 0;
                 else
                     values[current.outputNum] = 1;
