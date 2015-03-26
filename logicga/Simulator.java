@@ -27,28 +27,36 @@ public class Simulator {
         Vector<int[]> results = new Vector<int[]>();
         for (int i = 0; i < inputs.length; i++) {
             results.addElement(test(circ,i));
+            if(results.elementAt(i).length == 0)
+                return 0;
         }
         boolean matched[] = new boolean[outputs[0].length];
+        int num_found[] = new int[outputs[0].length];
+
         java.util.Arrays.fill(matched,false);
-        int matching = 0;
         //columns
         for (int i = 0; i < circ.genes.size()*2; i++) {
             //look at each output value we're looking for
             for (int j = 0; j < outputs[0].length; j++) {
                 if(!matched[j]) {
                     boolean is_match = true;
+                    int match_num = outputs.length;
                     for (int k = 0; k < results.size(); k++) {
                         if (results.elementAt(k)[i] != (outputs[k][j] ? 1 : 0)) {
                             is_match = false;
+                            match_num--;
                         }
                     }
                     matched[j] = is_match;
-                    if(is_match)
-                        matching++;
+                    num_found[j] = match_num;
                 }
             }
         }
-        return matching;
+        int sum = 0;
+        for(int i : num_found){
+            sum += i;
+        }
+        return sum;
     }
     private int[] test(Circuit circ, int input){
         int values[] = new int[circ.genes.size()*2];
@@ -88,6 +96,9 @@ public class Simulator {
                 else
                     values[current.outputNum] = 1;
             }
+        }
+        if (num_inputs != inputs[0].length) {
+            return new int[]{};
         }
         return values;
     }
