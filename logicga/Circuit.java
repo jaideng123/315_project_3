@@ -58,4 +58,9 @@ public class Circuit {
             genes.elementAt(i).Print();
         }
     }
+    
+    public void addGate(int output, String gateType, Vector input){
+    	genes.add(new Gene(output, gateType, input));
+    	
+    }
 }
