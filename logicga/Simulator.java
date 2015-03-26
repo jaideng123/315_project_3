@@ -48,7 +48,8 @@ public class Simulator {
                         }
                     }
                     matched[j] = is_match;
-                    num_found[j] = match_num;
+                    if(num_found[j] < match_num)
+                        num_found[j] = match_num;
                 }
             }
         }
