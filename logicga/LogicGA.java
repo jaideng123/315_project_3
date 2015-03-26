@@ -15,7 +15,7 @@ public class LogicGA {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
+        //tests for simulator
         Circuit test = new Circuit();
         Integer arr[] = new Integer[]{1};
         test.genes.add(new Gene(1,"NONE",new Vector(Arrays.asList(arr))));
