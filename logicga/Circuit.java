@@ -88,4 +88,9 @@ public class Circuit {
     	}
     	return result;
     }
+    
+    public Vector<Integer> getOutputLines() {
+    	Vector<Integer> result = new Vector();
+    	return result;
+    }
 }
