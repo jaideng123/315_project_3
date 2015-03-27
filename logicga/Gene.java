@@ -16,7 +16,7 @@ public class Gene {
     int outputNum;
     String type;
     Vector<Integer> inputs = new Vector();
-        
+
     public Gene(int output, String gateType, Vector input){
         outputNum = output;
         type = gateType;

@@ -28,6 +28,12 @@ public class Node {
 	Vector<Integer> inputlines = new Vector();
 	Vector<Integer> outputlines = new Vector();
 	
+	Node (Circuit c) {
+		total = c;
+		// can get number of inputs from Circuit class?
+		// can get number of outputs from Circuit class?
+	}
+	
 	Node (Circuit c, int i, int o) {
 		total = c;
 		ninput = i;

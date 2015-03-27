@@ -12,6 +12,7 @@ import java.util.Scanner;
 /**
  *
  * @author Eric C C
+ * 
  */
 public class Circuit {
     Vector<Gene> genes = new Vector<Gene>();
@@ -19,7 +20,6 @@ public class Circuit {
     
     public Circuit(){
         genes = new Vector();
-        
     }
     
     public void getFromFile(int populationIndex)throws IOException{
@@ -58,9 +58,34 @@ public class Circuit {
             genes.elementAt(i).Print();
         }
     }
-    
+
+    /**
+     * I added functions below. Please revise them.
+     * Sijine 
+     */
     public void addGate(int output, String gateType, Vector input){
     	genes.add(new Gene(output, gateType, input));
     	
+    }
+    
+    public void removeLastGate(){
+    	genes.removeElementAt(genes.size()-1);
+    }
+    
+    public Vector<Integer> getInputLines(){
+    	// I assumed input from first NONE lines are declared as inputs.
+    	// Also, logically, it should be only one input for NONE gate.
+    	// And one input and one output should be same number.
+    	Vector<Integer> result = new Vector();
+    	int i = 0;
+    	if (genes.size() > 0 && i < genes.size()) {
+	    	while (i < genes.size() && genes.elementAt(i).type == "None") {
+//	    		genes.elementAt(i).inputs.get(0);
+//	    		result.add(genes.elementAt(i).inputs.get(0));
+	    		result.add(genes.elementAt(i).outputNum);
+	    		i ++;
+	    	}
+    	}
+    	return result;
     }
 }
