@@ -6,6 +6,7 @@
 
 package logicga;
 
+import java.util.*;
 import java.io.*;
 import java.util.Vector;
 import java.util.Scanner;
@@ -97,7 +98,27 @@ public class Circuit {
     }
     
     public Vector<Integer> getOutputLines() {
-    	Vector<Integer> result = new Vector();
+        Set<Integer> inputSet = new HashSet<Integer>();
+        Set<Integer> outputSet = new HashSet<Integer>();
+    	Vector<Integer> inputVec = new Vector<Integer>();
+        inputVec = getInputLines();
+        Vector<Integer> result = new Vector<Integer>();
+       
+        for(Integer temp : inputVec){
+            inputVec.add(temp);
+        }
+        for(Gene gene : genes){
+            outputSet.add(gene.outputNum);
+        }
+        for(Integer inputNum : inputSet){
+            outputSet.remove(inputNum);
+        }
+        for(Integer finalOut : outputSet){
+            result.add(finalOut);
+        }
+
+
     	return result;
     }
+
 }
