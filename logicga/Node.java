@@ -45,13 +45,13 @@ public class Node {
 		noutput = outputlines.size();
 	}
 	
-	public void addGate(int output, String gateType, Vector input){
-    	circuit.genes.add(new Gene(output, gateType, input));
-    	refresh();
-    	if (gateType.endsWith("Not")) {
-    		nnot ++;
-    	}
-    }
+//	public void addGate(int output, String gateType, Vector input){
+//    	circuit.genes.add(new Gene(output, gateType, input));
+//    	refresh();
+//    	if (gateType.endsWith("Not")) {
+//    		nnot ++;
+//    	}
+//    }
 	
 	public boolean canUseNot(){
 		if (nnot >= 2) {

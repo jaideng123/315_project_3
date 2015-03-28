@@ -22,50 +22,50 @@ public class LogicBF {
 		System.out.println("Logic Non-GA, Brute Force START");
 		
 		// for test only, AND gate
-		boolean[][] fulladder_inputs = new boolean[4][2];
-		fulladder_inputs[0][0] = false;
-		fulladder_inputs[0][1] = false;
-		fulladder_inputs[1][0] = false;
-		fulladder_inputs[1][1] = true;
-		fulladder_inputs[2][0] = true;
-		fulladder_inputs[2][1] = false;
-		fulladder_inputs[3][0] = true;
-		fulladder_inputs[3][1] = true;
+//		boolean[][] fulladder_inputs = new boolean[4][2];
+//		fulladder_inputs[0][0] = false;
+//		fulladder_inputs[0][1] = false;
+//		fulladder_inputs[1][0] = false;
+//		fulladder_inputs[1][1] = true;
+//		fulladder_inputs[2][0] = true;
+//		fulladder_inputs[2][1] = false;
+//		fulladder_inputs[3][0] = true;
+//		fulladder_inputs[3][1] = true;
 		
 		
 		// real full adder inputs
-//		boolean[][] fulladder_inputs = new boolean[8][3];
-//		fulladder_inputs[0][0] = false;
-//		fulladder_inputs[0][1] = false;
-//		fulladder_inputs[0][2] = false;
-//		fulladder_inputs[1][0] = false;
-//		fulladder_inputs[1][1] = false;
-//		fulladder_inputs[1][2] = true;
-//		fulladder_inputs[2][0] = false;
-//		fulladder_inputs[2][1] = true;
-//		fulladder_inputs[2][2] = false;
-//		fulladder_inputs[3][0] = false;
-//		fulladder_inputs[3][1] = true;
-//		fulladder_inputs[3][2] = true;
-//		fulladder_inputs[4][0] = true;
-//		fulladder_inputs[4][1] = false;
-//		fulladder_inputs[4][2] = false;
-//		fulladder_inputs[5][0] = true;
-//		fulladder_inputs[5][1] = false;
-//		fulladder_inputs[5][2] = true;
-//		fulladder_inputs[6][0] = true;
-//		fulladder_inputs[6][1] = true;
-//		fulladder_inputs[6][2] = false;
-//		fulladder_inputs[7][0] = true;
-//		fulladder_inputs[7][1] = true;
-//		fulladder_inputs[7][2] = true;
+		boolean[][] fulladder_inputs = new boolean[8][3];
+		fulladder_inputs[0][0] = false;
+		fulladder_inputs[0][1] = false;
+		fulladder_inputs[0][2] = false;
+		fulladder_inputs[1][0] = false;
+		fulladder_inputs[1][1] = false;
+		fulladder_inputs[1][2] = true;
+		fulladder_inputs[2][0] = false;
+		fulladder_inputs[2][1] = true;
+		fulladder_inputs[2][2] = false;
+		fulladder_inputs[3][0] = false;
+		fulladder_inputs[3][1] = true;
+		fulladder_inputs[3][2] = true;
+		fulladder_inputs[4][0] = true;
+		fulladder_inputs[4][1] = false;
+		fulladder_inputs[4][2] = false;
+		fulladder_inputs[5][0] = true;
+		fulladder_inputs[5][1] = false;
+		fulladder_inputs[5][2] = true;
+		fulladder_inputs[6][0] = true;
+		fulladder_inputs[6][1] = true;
+		fulladder_inputs[6][2] = false;
+		fulladder_inputs[7][0] = true;
+		fulladder_inputs[7][1] = true;
+		fulladder_inputs[7][2] = true;
 		
 		// for test, AND gate
-		boolean[][] fulladder_outputs = new boolean[4][1];
-		fulladder_outputs[0][0] = false;
-		fulladder_outputs[1][0] = false;
-		fulladder_outputs[2][0] = false;
-		fulladder_outputs[3][0] = true;
+//		boolean[][] fulladder_outputs = new boolean[4][1];
+//		fulladder_outputs[0][0] = false;
+//		fulladder_outputs[1][0] = false;
+//		fulladder_outputs[2][0] = false;
+//		fulladder_outputs[3][0] = true;
 		
 		// real full adder outputs
 //		boolean[][] fulladder_outputs = new boolean[8][2];
@@ -86,6 +86,16 @@ public class LogicBF {
 //		fulladder_outputs[7][0] = true;
 //		fulladder_outputs[7][1] = true;
 
+		boolean[][] fulladder_outputs = new boolean[8][2];
+		fulladder_outputs[0][0] = false;
+		fulladder_outputs[1][0] = true;
+		fulladder_outputs[2][0] = false;
+		fulladder_outputs[3][0] = true;
+		fulladder_outputs[4][0] = false;
+		fulladder_outputs[5][0] = true;
+		fulladder_outputs[6][0] = true;
+		fulladder_outputs[7][0] = true;
+		
 		// declare simulator with truth table
 		Simulator sim = new Simulator(fulladder_inputs, fulladder_outputs);
 		
@@ -116,7 +126,7 @@ public class LogicBF {
 		Node result = null;
 		
 		// start to build a circuit
-		start_node.get(0).noutput = 3; // for AND test
+//		start_node.get(0).noutput = 3; // for AND test
 		
 //		System.out.println("OUTS!!! " + sim.outputs[0].length);
 
@@ -142,7 +152,7 @@ public class LogicBF {
 //	                System.out.print(Integer.parseInt(mc.nextElement()[i].toString()) + " ");
 	            	Vector<Integer> v = new Vector<Integer>();
 	            	v.add(Integer.parseInt(mc.nextElement()[i].toString()));
-	        		temp_level.get(temp_level.size()-1).addGate(
+	        		temp_level.get(temp_level.size()-1).circuit.addGate(
 	        				temp_level.get(temp_level.size()-1).circuit.genes.size()+1,
 	        				"None", v);
 	            }
@@ -176,7 +186,7 @@ public class LogicBF {
 	            	String gatetype = mc_gate.nextElement()[i].toString();
 	            	for (int j = 0; j < temp_inputset.size(); j ++) {
 	            		temp_level.add(new Node(copyCircuit(start_node.get(0).circuit)));
-	            		temp_level.get(temp_level.size()-1).addGate(
+	            		temp_level.get(temp_level.size()-1).circuit.addGate(
 	            				temp_level.get(temp_level.size()-1).circuit.genes.size()+1,
 	            				gatetype, temp_inputset.get(j));
 //	            		temp_level.get(temp_level.size()-1).noutput = 2;
@@ -185,6 +195,8 @@ public class LogicBF {
 	        }
 	        nodes.add(temp_level);
 		} // checking number of outputs END
+		
+		System.out.println(nodes.get(nodes.size()-1).size());
 		
 		// adding other parts
 		while (!is_done){
@@ -199,7 +211,7 @@ public class LogicBF {
 				}
 			}
 			
-			System.out.println("DAMN");
+//			System.out.println("DAMN");
 			
 			// build next level
 			if (!is_done){
@@ -234,7 +246,7 @@ public class LogicBF {
 //			                System.out.print(Integer.parseInt(mc.nextElement()[i].toString()) + " ");
 			            	v.add(Integer.parseInt(mc.nextElement()[i].toString()));
 			            }
-			            temp_level.get(temp_level.size()-1).addGate(
+			            temp_level.get(temp_level.size()-1).circuit.addGate(
 		        				temp_level.get(temp_level.size()-1).circuit.genes.size()+1,
 		        				"And", v);
 			        }
@@ -247,7 +259,7 @@ public class LogicBF {
 //			                System.out.print(Integer.parseInt(mc.nextElement()[i].toString()) + " ");
 			            	v.add(Integer.parseInt(mc.nextElement()[i].toString()));
 			            }
-			            temp_level.get(temp_level.size()-1).addGate(
+			            temp_level.get(temp_level.size()-1).circuit.addGate(
 		        				temp_level.get(temp_level.size()-1).circuit.genes.size()+1,
 		        				"Or", v);
 			        }

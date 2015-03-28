@@ -17,6 +17,7 @@ import java.util.Scanner;
 public class Circuit {
     Vector<Gene> genes = new Vector<Gene>();
     String aFile;
+    int n_not = 0;
     
     public Circuit(){
         genes = new Vector();
@@ -48,8 +49,11 @@ public class Circuit {
                    }
                }
            }
-            //The genes will be stored in the order they appear in text
+           //The genes will be stored in the order they appear in text
            genes.add(new Gene(outputNum,type,inputs));
+           if (type.equals("Not")) {
+        	   n_not ++;
+           }
        }  
     }
     
@@ -65,6 +69,9 @@ public class Circuit {
      */
     public void addGate(int output, String gateType, Vector input){
     	genes.add(new Gene(output, gateType, input));
+    	if (gateType.equals("Not")) {
+     	   n_not ++;
+        }
     }
     
     public void removeLastGate(){
