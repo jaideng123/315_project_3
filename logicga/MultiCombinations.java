@@ -24,6 +24,16 @@ public class MultiCombinations {
         comb = new Combinations(myObjects, k);
     } // constructor
  
+    public void print() {
+		while (hasMoreElements()) {
+			for (int i = 0; i < nextElement().length; i++) {
+				System.out.print(Integer.parseInt(nextElement()[i].toString())
+						+ " ");
+			}
+			System.out.println();
+		}
+    }
+    
     boolean hasMoreElements() {
         boolean ret = false;
         nextElem = null;
