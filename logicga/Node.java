@@ -8,35 +8,56 @@ import java.util.Vector;
 */
 
 public class Node {
-	/**
-	 * variables
-	 * 	number of not gates
-	 * 	whole circuit
-	 * 	number of inputs // no need
-	 *  number of outputs // no need
-	 *  array or vector of input line number
-	 *  	first few lines of NONE lines are input
-	 *  array or vector of output line number
-	 *  	//
-	 */
 	
 	int nnot = 0; // number of not gates
-	Circuit total = new Circuit();
+	Circuit circuit = new Circuit();
 	int ninput;
 	int noutput;
-	int nline;
+
 	Vector<Integer> inputlines = new Vector();
 	Vector<Integer> outputlines = new Vector();
 	
+//	Node () {
+//		
+//	}
+	
 	Node (Circuit c) {
-		total = c;
+		circuit = c;
+		refresh();
+//		inputlines = c.getInputLines();
+//		outputlines = c.getOutputLines();
+//		ninput = inputlines.size();
+//		noutput = outputlines.size();
 		// can get number of inputs from Circuit class?
 		// can get number of outputs from Circuit class?
 	}
 	
-	Node (Circuit c, int i, int o) {
-		total = c;
-		ninput = i;
-		noutput = o;
+//	Node (Circuit c, int i, int o) {
+//		circuit = c;
+//		ninput = i;
+//		noutput = o;
+//	}
+	
+	public void refresh() {
+		inputlines = circuit.getInputLines();
+		outputlines = circuit.getOutputLines();
+		ninput = inputlines.size();
+		noutput = outputlines.size();
 	}
+	
+	public void addGate(int output, String gateType, Vector input){
+    	circuit.genes.add(new Gene(output, gateType, input));
+    	refresh();
+    	if (gateType.endsWith("Not")) {
+    		nnot ++;
+    	}
+    }
+	
+	public boolean canUseNot(){
+		if (nnot >= 2) {
+			return false;
+		} else {
+			return true;
+		}
+	} 
 }

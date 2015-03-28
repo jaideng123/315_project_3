@@ -65,7 +65,6 @@ public class Circuit {
      */
     public void addGate(int output, String gateType, Vector input){
     	genes.add(new Gene(output, gateType, input));
-    	
     }
     
     public void removeLastGate(){
@@ -79,7 +78,8 @@ public class Circuit {
     	Vector<Integer> result = new Vector();
     	int i = 0;
     	if (genes.size() > 0 && i < genes.size()) {
-	    	while (i < genes.size() && genes.elementAt(i).type == "None") {
+	    	while (i < genes.size() && genes.elementAt(i).type == "None" &&
+	    			genes.elementAt(i).outputNum == genes.elementAt(i).inputs.firstElement()) {
 //	    		genes.elementAt(i).inputs.get(0);
 //	    		result.add(genes.elementAt(i).inputs.get(0));
 	    		result.add(genes.elementAt(i).outputNum);
