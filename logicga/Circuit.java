@@ -103,12 +103,14 @@ public class Circuit {
     	Vector<Integer> inputVec = new Vector<Integer>();
         inputVec = getInputLines();
         Vector<Integer> result = new Vector<Integer>();
-       
+
         for(Integer temp : inputVec){
             inputVec.add(temp);
         }
         for(Gene gene : genes){
-            outputSet.add(gene.outputNum);
+            if(gene.type != "None"){
+                outputSet.add(gene.outputNum);
+            }
         }
         for(Integer inputNum : inputSet){
             outputSet.remove(inputNum);
