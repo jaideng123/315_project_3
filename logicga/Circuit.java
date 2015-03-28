@@ -108,6 +108,7 @@ public class Circuit {
             inputVec.add(temp);
         }
         for(Gene gene : genes){
+            //My new function
             if(gene.type != "None"){
                 outputSet.add(gene.outputNum);
             }
