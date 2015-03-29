@@ -224,51 +224,52 @@ public class LogicBF {
 //						temp_node2.circuit.Print();
 //						System.out.println("temp_genes.size    " + temp_genes.size());
 
-						if (temp_node2.getOutputlines().size() == sim.outputs[0].length) {
-							// DO NOTHING...
+						if (temp_node2.outputlines.size() == sim.outputs[0].length) {
+							// doesn't need extra output
+							temp_level_2.add(temp_node2);
 						} else {
-							// add onemore NONE
+							// does need extra output
+							// add one more NONE
 							for (int j = 0; j < temp_genes.size(); j++) {
 								Node temp_node3 = new Node(copyCircuit(temp_node2.circuit));
 								Vector<Integer> temp_inputs2 = new Vector<Integer>();
-								temp_inputs2.add(temp_genes.get(j).outputNum);
-								temp_node3.addGate(temp_genes.size() + 1, "None", temp_inputs2);
-								temp_level_2.add(temp_node3);
-								
-								System.out.println("OUTPUTsss");
+								System.out.println("temp_node3.output: " + temp_node3.outputlines.size());
 								for (int b = 0; b < temp_node3.getOutputlines().size(); b ++) {
 									System.out.println("OUTPUT: " + temp_node3.getOutputlines().get(b));
 								}
-								
-//								temp_node3.circuit.Print();
-//								temp_node2.circuit.Print();
-//								System.out.println();
-							}							
+								temp_node3.circuit.Print();
+								temp_inputs2.add(temp_genes.get(j).outputNum);
+								temp_node3.addGate(temp_genes.size() + 1, "None", temp_inputs2);
+								temp_level_2.add(temp_node3);
+							}
 						}
-						
-						
 						
 						
 					}
-					// add OR
-					while (mc.hasMoreElements()) {
-						Vector<Integer> temp_inputs = new Vector<Integer>();
-						Node temp_node1 = new Node(copyCircuit(original_circuit));
-						for (int j = 0; j < mc.nextElement().length; j++) {
-							temp_inputs.add(Integer.parseInt(mc.nextElement()[j].toString()));
-						}
-						temp_node1.addGate(temp_node1.circuit.genes.size()+1, "Or", temp_inputs);
-						Vector<Gene> temp_genes = temp_node1.circuit.genes;
-						// add onemore NONE
-						for (int j = 0; j < temp_genes.size(); j++) {
-							Node temp_node2 = new Node(copyCircuit(temp_node1.circuit));
-							Vector<Integer> temp_inputs2 = new Vector<Integer>();
-							temp_inputs2.add(temp_genes.get(j).outputNum);
-							temp_node2.addGate(temp_genes.size() + 1, "None", temp_inputs2);
-							temp_level_2.add(temp_node2);
-						}
-					}
+					
+					/**  will need it in the future  ***/
+//					// add OR
+//					mc = new MultiCombinations(objects, 2);
+//					mc.print();
+//					while (mc.hasMoreElements()) {
+//						Vector<Integer> temp_inputs = new Vector<Integer>();
+//						Node temp_node1 = new Node(copyCircuit(original_circuit));
+//						for (int j = 0; j < mc.nextElement().length; j++) {
+//							temp_inputs.add(Integer.parseInt(mc.nextElement()[j].toString()));
+//						}
+//						temp_node1.addGate(temp_node1.circuit.genes.size()+1, "Or", temp_inputs);
+//						Vector<Gene> temp_genes = temp_node1.circuit.genes;
+//						// add onemore NONE
+//						for (int j = 0; j < temp_genes.size(); j++) {
+//							Node temp_node2 = new Node(copyCircuit(temp_node1.circuit));
+//							Vector<Integer> temp_inputs2 = new Vector<Integer>();
+//							temp_inputs2.add(temp_genes.get(j).outputNum);
+//							temp_node2.addGate(temp_genes.size() + 1, "None", temp_inputs2);
+//							temp_level_2.add(temp_node2);
+//						}
+//					}
 				}
+				all_nodes.add(temp_level_2);
 			} else {
 				// make numbers of output fits!! 
 				while (diff != 0) {
@@ -298,7 +299,7 @@ public class LogicBF {
 				}				
 			}
 //			temp_level_1 = temp_level_2;
-			all_nodes.add(temp_level_2);
+			
 			
 			// test all circuits in this level
 			current_level = all_nodes.size()-1;
@@ -307,15 +308,12 @@ public class LogicBF {
 //				System.out.println(sim.simulate(all_nodes.get(current_level)).g)
 				System.out.println("\nCircuit:");
 				all_nodes.get(current_level).get(i).circuit.Print();
-				
-				// EEEEEEEEERRRRRRRRRRRRRRRRRRRRRRROOOOOOOOOOOOOOORRRRRRRRRRRRRRR
 				System.out.println("RESULT: " + sim.simulate(all_nodes.get(current_level).get(i).circuit));
-				// EEEEEEEEERRRRRRRRRRRRRRRRRRRRRRROOOOOOOOOOOOOOORRRRRRRRRRRRRRR
 				
-//				if (sim.simulate(all_nodes.get(current_level).get(i).circuit) == sim.outputs.length) {
-//					is_done = true;
-//					i += all_nodes.get(current_level).size();
-//				}
+				if (sim.simulate(all_nodes.get(current_level).get(i).circuit) == sim.outputs.length) {
+					is_done = true;
+					i += all_nodes.get(current_level).size();
+				}
 			}
 		}
 				
