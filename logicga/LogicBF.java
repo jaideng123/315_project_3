@@ -49,6 +49,18 @@ public class LogicBF {
 		fulladder_inputs[3][0] = true;
 		fulladder_inputs[3][1] = true;
 		
+
+		boolean[][] fulladder_outputs = new boolean[4][2];
+		fulladder_outputs[0][0] = false;
+		fulladder_outputs[0][1] = false;
+		fulladder_outputs[1][0] = false;
+		fulladder_outputs[1][1] = true;
+		fulladder_outputs[2][0] = false;
+		fulladder_outputs[2][1] = false;
+		fulladder_outputs[3][0] = true;
+		fulladder_outputs[3][1] = true;
+
+		
 		// real full adder inputs
 //		boolean[][] fulladder_inputs = new boolean[8][3];
 //		fulladder_inputs[0][0] = false;
@@ -110,16 +122,6 @@ public class LogicBF {
 //		fulladder_outputs[7][0] = true;
 //		fulladder_outputs[7][1] = true;
 
-		boolean[][] fulladder_outputs = new boolean[4][2];
-		fulladder_outputs[0][0] = false;
-		fulladder_outputs[0][1] = false;
-		fulladder_outputs[1][0] = false;
-		fulladder_outputs[1][1] = true;
-		fulladder_outputs[2][0] = false;
-		fulladder_outputs[2][1] = false;
-		fulladder_outputs[3][0] = true;
-		fulladder_outputs[3][1] = true;
-
 		
 //		boolean[][] fulladder_outputs = new boolean[8][1];
 //		fulladder_outputs[0][0] = false;
@@ -177,6 +179,7 @@ public class LogicBF {
 		Vector<Node> temp_level_1 = new Vector<Node>();
 //		temp_level_1.add(start_node);
 		temp_level_1 = first_level;
+		
 //		while (!is_done) {
 		for (int a = 0; a < 1; a ++){
 //			System.out.println("In while loop");
@@ -210,22 +213,22 @@ public class LogicBF {
 						System.out.println("OUTPUT: " + original_output.get(j));
 					}
 					// add AND
-					MultiCombinations mc = new MultiCombinations(objects, 2);
+					MultiCombinations mc_and = new MultiCombinations(objects, 2);
 //					mc.print();
-					while (mc.hasMoreElements()) {
+					while (mc_and.hasMoreElements()) {
 //						System.out.println("IN SECOND WHILE");
 						Vector<Integer> temp_inputs = new Vector<Integer>();
 						Node temp_node2 = new Node(copyCircuit(original_circuit));
-						for (int j = 0; j < mc.nextElement().length; j++) {
-							temp_inputs.add(Integer.parseInt(mc.nextElement()[j].toString()));
+						for (int j = 0; j < mc_and.nextElement().length; j++) {
+							temp_inputs.add(Integer.parseInt(mc_and.nextElement()[j].toString()));
 						}
 						temp_node2.addGate(temp_node2.circuit.genes.size()+1, "And", temp_inputs);
 						Vector<Gene> temp_genes = temp_node2.circuit.genes;
-//						temp_node2.circuit.Print();
-//						System.out.println("temp_genes.size    " + temp_genes.size());
 
-						if (temp_node2.outputlines.size() == sim.outputs[0].length) {
+						if (temp_node2.circuit.getOutputLines().size() == sim.outputs[0].length) {
 							// doesn't need extra output
+//							System.out.println("EQUAL");
+//							temp_node2.circuit.Print();	
 							temp_level_2.add(temp_node2);
 						} else {
 							// does need extra output
@@ -233,50 +236,75 @@ public class LogicBF {
 							for (int j = 0; j < temp_genes.size(); j++) {
 								Node temp_node3 = new Node(copyCircuit(temp_node2.circuit));
 								Vector<Integer> temp_inputs2 = new Vector<Integer>();
-								System.out.println("temp_node3.output: " + temp_node3.outputlines.size());
-								for (int b = 0; b < temp_node3.getOutputlines().size(); b ++) {
-									System.out.println("OUTPUT: " + temp_node3.getOutputlines().get(b));
-								}
-								temp_node3.circuit.Print();
 								temp_inputs2.add(temp_genes.get(j).outputNum);
 								temp_node3.addGate(temp_genes.size() + 1, "None", temp_inputs2);
+//								temp_node3.circuit.Print();
 								temp_level_2.add(temp_node3);
 							}
 						}
-						
-						
 					}
 					
 					/**  will need it in the future  ***/
 //					// add OR
-//					mc = new MultiCombinations(objects, 2);
-//					mc.print();
-//					while (mc.hasMoreElements()) {
-//						Vector<Integer> temp_inputs = new Vector<Integer>();
-//						Node temp_node1 = new Node(copyCircuit(original_circuit));
-//						for (int j = 0; j < mc.nextElement().length; j++) {
-//							temp_inputs.add(Integer.parseInt(mc.nextElement()[j].toString()));
-//						}
-//						temp_node1.addGate(temp_node1.circuit.genes.size()+1, "Or", temp_inputs);
-//						Vector<Gene> temp_genes = temp_node1.circuit.genes;
-//						// add onemore NONE
-//						for (int j = 0; j < temp_genes.size(); j++) {
-//							Node temp_node2 = new Node(copyCircuit(temp_node1.circuit));
-//							Vector<Integer> temp_inputs2 = new Vector<Integer>();
-//							temp_inputs2.add(temp_genes.get(j).outputNum);
-//							temp_node2.addGate(temp_genes.size() + 1, "None", temp_inputs2);
-//							temp_level_2.add(temp_node2);
-//						}
-//					}
+					MultiCombinations mc_or = new MultiCombinations(objects, 2);
+//					mc_or.print();
+					while (mc_or.hasMoreElements()) {
+//						System.out.println("IN SECOND WHILE");
+						Vector<Integer> temp_inputs = new Vector<Integer>();
+						Node temp_node2 = new Node(copyCircuit(original_circuit));
+						for (int j = 0; j < mc_or.nextElement().length; j++) {
+							temp_inputs.add(Integer.parseInt(mc_or.nextElement()[j].toString()));
+						}
+						temp_node2.addGate(temp_node2.circuit.genes.size()+1, "Or", temp_inputs);
+						Vector<Gene> temp_genes = temp_node2.circuit.genes;
+
+						if (temp_node2.circuit.getOutputLines().size() == sim.outputs[0].length) {
+							// doesn't need extra output
+//							System.out.println("EQUAL");
+//							temp_node2.circuit.Print();	
+							temp_level_2.add(temp_node2);
+						} else {
+							// does need extra output
+							// add one more NONE
+							for (int j = 0; j < temp_genes.size(); j++) {
+								Node temp_node3 = new Node(copyCircuit(temp_node2.circuit));
+								Vector<Integer> temp_inputs2 = new Vector<Integer>();
+								temp_inputs2.add(temp_genes.get(j).outputNum);
+								temp_node3.addGate(temp_genes.size() + 1, "None", temp_inputs2);
+//								temp_node3.circuit.Print();
+								temp_level_2.add(temp_node3);
+							}
+						}
+					}
 				}
 				all_nodes.add(temp_level_2);
+				
+				// test all circuits in this level
+				current_level = all_nodes.size()-1;
+				System.out.println("Current Level is: "+current_level + " has " + all_nodes.get(current_level).size());
+				for (int i = 0; i < all_nodes.get(current_level).size() - 1; i++) {
+//					System.out.println(sim.simulate(all_nodes.get(current_level)).g)
+					System.out.println("\nCircuit:");
+					all_nodes.get(current_level).get(i).circuit.Print();
+					System.out.println("RESULT: " + sim.simulate(all_nodes.get(current_level).get(i).circuit));
+					
+					if (sim.simulate(all_nodes.get(current_level).get(i).circuit) == sim.outputs.length) {
+						System.out.println("YAY!!!");
+						is_done = true;
+						result = all_nodes.get(current_level).get(i).circuit;
+//						i += all_nodes.get(current_level).size();
+						break;
+						 
+					}
+				}
 			} else {
 				// make numbers of output fits!! 
-				while (diff != 0) {
+//				while (diff != 0) {
 					// when the number of outputs from circuit and simulator are different
-					if (diff < 0) {
-						// add output lines
+				if (diff < 0) {
+					// add output lines
 //						System.out.println("NEED MORE OUTPUTS");
+					while (diff != 0) {
 						for (int i = 0; i < temp_level_1.size(); i++) {
 							Circuit original_circuit = copyCircuit(temp_level_1.get(i).circuit);
 							Node original_node = new Node(original_circuit);
@@ -288,39 +316,26 @@ public class LogicBF {
 								temp_inputs.add(original_genes.get(j).outputNum);
 								Node temp_node1 = new Node(original_circuit);
 								temp_node1.addGate(original_genes.size() + 1, "None", temp_inputs);
+								temp_level_2.add(temp_node1);
 							}
 						}
-						
-					} else if (diff > 0) {
-						// reduce output lines
-						System.out.println("NEED LESS OUTPUTS");
+						diff = temp_level_2.get(0).circuit.genes.size() - sim.outputs[0].length;;
+						temp_level_1 = temp_level_2;
+						temp_level_2.clear();
 					}
-//					diff = 
-				}				
-			}
-//			temp_level_1 = temp_level_2;
-			
-			
-			// test all circuits in this level
-			current_level = all_nodes.size()-1;
-			System.out.println("Current Level is: "+current_level + " has " + all_nodes.get(current_level).size());
-			for (int i = 0; i < all_nodes.get(current_level).size() - 1; i++) {
-//				System.out.println(sim.simulate(all_nodes.get(current_level)).g)
-				System.out.println("\nCircuit:");
-				all_nodes.get(current_level).get(i).circuit.Print();
-				System.out.println("RESULT: " + sim.simulate(all_nodes.get(current_level).get(i).circuit));
-				
-				if (sim.simulate(all_nodes.get(current_level).get(i).circuit) == sim.outputs.length) {
-					System.out.println("YAY!!!");
-					is_done = true;
-					result = all_nodes.get(current_level).get(i).circuit;
-//					i += all_nodes.get(current_level).size();
-					break;
-					 
+				} else if (diff > 0) {
+					// reduce output lines
+					System.out.println("NEED LESS OUTPUTS");
 				}
+//					diff = 
+//					temp_level_1 = temp_level_2;
+//				}	
 			}
+			diff = temp_level_2.get(0).circuit.genes.size() - sim.outputs[0].length;
+			temp_level_1 = temp_level_2;
+			temp_level_2.clear();
 		}
-				
+
 		System.out.println("DONE");
 		result.Print();
         System.out.println("Logic Non-GA, Brute Force END");
