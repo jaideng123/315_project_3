@@ -311,8 +311,12 @@ public class LogicBF {
 				System.out.println("RESULT: " + sim.simulate(all_nodes.get(current_level).get(i).circuit));
 				
 				if (sim.simulate(all_nodes.get(current_level).get(i).circuit) == sim.outputs.length) {
+					System.out.println("YAY!!!");
 					is_done = true;
-					i += all_nodes.get(current_level).size();
+					result = all_nodes.get(current_level).get(i).circuit;
+//					i += all_nodes.get(current_level).size();
+					break;
+					 
 				}
 			}
 		}
