@@ -134,7 +134,11 @@ public class LogicBF {
 		c.Print();
 		///////////////////////////////////////////////// WORKS!!
 		
-//		Vector<Integer> vvv = c.getOutputLines();
+		Vector<Integer> vv = c.getOutputLines();
+		for (int k = 0; k < vv.size(); k ++) {
+			System.out.println(vv.get(k));
+		}
+		
 		Circuit c2 = new Circuit();
 		try {
 			c2.getFromFile(0);
@@ -144,8 +148,19 @@ public class LogicBF {
 		}
 		
 		c2.Print();
+		for (int k = 0; k < c2.genes.size(); k ++) {
+			System.out.println((c2.genes.elementAt(k).inputs.firstElement()));
+//			System.out.println(c2.genes.get(k).inputs.get(0).compareTo(c2.genes.get(k).outputNum));
+//			genes.get(i).inputs.get(0).compareTo(genes.get(i).outputNum) == 0) {
+//			int test = c2.genes.get(k).inputs.get(0).intValue();
+//			System.out.println("TEST: " + test);
+//			System.out.println(c2.genes.get(k).inputs.get(0).toString());
+//			c2.genes.get(k).
+		}
 		System.out.println("get out lines testing");
+		
 		Vector<Integer> vvv = c2.getOutputLines();
+		
 		for (int k = 0; k < vvv.size(); k ++) {
 			System.out.println(vvv.get(k));
 		}

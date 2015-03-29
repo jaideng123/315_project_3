@@ -85,15 +85,16 @@ public class Circuit {
     	// And one input and one output should be same number.
     	Vector<Integer> result = new Vector();
     	int i = 0;
-    	if (genes.size() > 0 && i < genes.size()) {
-	    	while (i < genes.size() && genes.elementAt(i).type == "None" &&
-	    			genes.elementAt(i).outputNum == genes.elementAt(i).inputs.firstElement()) {
+//    	if (genes.size() > 0 && i < genes.size()) {
+	    	while (genes.size() > 0 && i < genes.size() &&
+	    			genes.get(i).type.contentEquals("None") &&
+	    			genes.get(i).inputs.get(0).compareTo(genes.get(i).outputNum) == 0) {
 //	    		genes.elementAt(i).inputs.get(0);
 //	    		result.add(genes.elementAt(i).inputs.get(0));
-	    		result.add(genes.elementAt(i).outputNum);
+	    		result.add((java.lang.Integer) genes.elementAt(i).outputNum);
 	    		i ++;
 	    	}
-    	}
+//    	}
     	return result;
     }
     
@@ -103,10 +104,30 @@ public class Circuit {
     	Vector<Integer> inputVec = new Vector<Integer>();
         inputVec = getInputLines();
         Vector<Integer> result = new Vector<Integer>();
-
-        for(Integer temp : inputVec){
-            inputVec.add(temp);
+        
+        System.out.println("getOutputLines " + inputVec.size());
+        
+        for (int i=0; i<inputVec.size(); i++) {
+        	int cnt = 0;
+        	for(int j = 0; j < genes.size(); j++){
+        		System.out.print("inputs : ");
+        		for (int k = 0; k < genes.get(j).inputs.size(); k++) {
+        			System.out.print(genes.get(j).inputs.get(k) + " ");
+        			if (inputVec.get(i) == genes.get(j).inputs.get(k)) {
+        				cnt ++;
+        			}
+        		}
+        		System.out.println();
+        	}
+        	if (cnt == 1) {
+        		result.add(inputVec.get(i));
+        	}
+        	System.out.println("cnt == " + cnt);
         }
+        
+//        for(Integer temp : inputVec){
+//            inputVec.add(temp);
+//        }
         for(Gene gene : genes){
             //My new function
             if(gene.type != "None"){
