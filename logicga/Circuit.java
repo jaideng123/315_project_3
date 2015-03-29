@@ -84,17 +84,33 @@ public class Circuit {
     	// Also, logically, it should be only one input for NONE gate.
     	// And one input and one output should be same number.
     	Vector<Integer> result = new Vector();
-    	int i = 0;
-//    	if (genes.size() > 0 && i < genes.size()) {
-	    	while (genes.size() > 0 && i < genes.size() &&
-	    			genes.get(i).type.contentEquals("None") &&
-	    			genes.get(i).inputs.get(0).compareTo(genes.get(i).outputNum) == 0) {
-//	    		genes.elementAt(i).inputs.get(0);
-//	    		result.add(genes.elementAt(i).inputs.get(0));
-	    		result.add((java.lang.Integer) genes.elementAt(i).outputNum);
-	    		i ++;
-	    	}
-//    	}
+//    	int i = 0;
+    	System.out.println("genes: " + genes.size());
+    	
+    	// HERE!!
+    	
+    	if (genes.size() > 0) {
+    		for (int i = 0; i < genes.size(); i++) {
+    			if (genes.get(i).type.equals("None")) {
+//    				if (genes.get(i).outputNum == genes.get(i).inputs.firstElement()) {
+    					System.out.println("outputNum: " + genes.get(i).outputNum);
+    					System.out.println(" inputNum: " + genes.get(i).inputs.firstElement());
+    					result.add(genes.get(i).outputNum);
+//    				}
+    			}
+    		}
+//	    	while (genes.size() > 0 && i < genes.size() &&
+//	    			genes.get(i).type.equals("None")//&&
+////	    			genes.get(i).inputs.get(0).compareTo(genes.get(i).outputNum) == 0
+//	    			){
+//	    		System.out.println("outputNum: " + genes.get(i).outputNum);
+//	    		System.out.println(" inputNum: " + genes.get(i).inputs.get(0));
+////	    		genes.elementAt(i).inputs.get(0);
+////	    		result.add(genes.elementAt(i).inputs.get(0));
+////	    		result.add((java.lang.Integer) genes.elementAt(i).outputNum);
+//	    		i ++;
+//	    	}
+    	}
     	return result;
     }
     
