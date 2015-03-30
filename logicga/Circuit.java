@@ -15,15 +15,44 @@ import java.util.Scanner;
  * @author Eric C C
  * 
  */
-public class Circuit {
+ // need Comparable for natural ordering for a Priority Queue
+public class Circuit implements Comparable<Circuit> {
     Vector<Gene> genes = new Vector<Gene>();
     String aFile;
     int n_not = 0;
+    int fitness;
     
     public Circuit(){
         genes = new Vector<Gene>();
     }
-    
+     //Mutates circuit by either adding a gate or mutating a gene
+    public void mutate(){
+    	Random r1 = new Random();
+    	Random r2 = new Random();
+    	int mutation = r1.nextInt(4)+1;
+    	int output;
+    	switch (mutation){
+//    	case 1:{
+//    		 output = r1.nextInt(genes.size())+1;
+//    		 addGate(output, "AND",  );
+//    	}
+//    	case 2:{
+//    		addGate(output, "OR", );
+//    	}
+//    	case 3:{
+//    		addGate(output, "NOT", );
+//    	}
+    	case 4:{
+    		int index = r2.nextInt(genes.size()) +1;
+    		genes.get(index).mutate();
+    		
+    	}
+    	    		
+    	
+    	default:
+    		System.out.println("Could not mutate...");
+    	}
+    }
     public void getFromFile(int populationIndex)throws IOException{
         //Fix for generic case
         // path should be change.
@@ -141,5 +170,19 @@ public class Circuit {
 
     	return result;
     }
+    //Establishes natural order
+    public int compareTo(Circuit a) {
+		int LESS = -1;
+		int EQUAL = 0;
+		int GREATER = 1;
+		
+		if(fitness < a.fitness)
+			return LESS;
+		if(fitness == a.fitness)
+			return EQUAL;
+		if(fitness > a.fitness)
+			return GREATER;
+		return 0;
+	}
 
 }
