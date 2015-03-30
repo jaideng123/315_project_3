@@ -77,23 +77,6 @@ public class LogicBF {
 //		fulladder_outputs[3][0] = false;
 		
 		// custom circuit 2 test
-//		boolean[][] fulladder_inputs = new boolean[4][2];
-//		fulladder_inputs[0][0] = false;
-//		fulladder_inputs[0][1] = false;
-//		fulladder_inputs[1][0] = false;
-//		fulladder_inputs[1][1] = true;
-//		fulladder_inputs[2][0] = true;
-//		fulladder_inputs[2][1] = false;
-//		fulladder_inputs[3][0] = true;
-//		fulladder_inputs[3][1] = true;
-//
-//		boolean[][] fulladder_outputs = new boolean[4][1];
-//		fulladder_outputs[0][0] = true;
-//		fulladder_outputs[1][0] = false;
-//		fulladder_outputs[2][0] = true;
-//		fulladder_outputs[3][0] = true;
-		
-		// XOR test
 		boolean[][] fulladder_inputs = new boolean[4][2];
 		fulladder_inputs[0][0] = false;
 		fulladder_inputs[0][1] = false;
@@ -105,10 +88,27 @@ public class LogicBF {
 		fulladder_inputs[3][1] = true;
 
 		boolean[][] fulladder_outputs = new boolean[4][1];
-		fulladder_outputs[0][0] = false;
-		fulladder_outputs[1][0] = true;
+		fulladder_outputs[0][0] = true;
+		fulladder_outputs[1][0] = false;
 		fulladder_outputs[2][0] = true;
-		fulladder_outputs[3][0] = false;
+		fulladder_outputs[3][0] = true;
+		
+		// XOR test
+//		boolean[][] fulladder_inputs = new boolean[4][2];
+//		fulladder_inputs[0][0] = false;
+//		fulladder_inputs[0][1] = false;
+//		fulladder_inputs[1][0] = false;
+//		fulladder_inputs[1][1] = true;
+//		fulladder_inputs[2][0] = true;
+//		fulladder_inputs[2][1] = false;
+//		fulladder_inputs[3][0] = true;
+//		fulladder_inputs[3][1] = true;
+//
+//		boolean[][] fulladder_outputs = new boolean[4][1];
+//		fulladder_outputs[0][0] = false;
+//		fulladder_outputs[1][0] = true;
+//		fulladder_outputs[2][0] = true;
+//		fulladder_outputs[3][0] = false;
 		
 		// AND test
 //		boolean[][] fulladder_inputs = new boolean[4][2];
@@ -337,10 +337,10 @@ public class LogicBF {
 				for (int i = 0; i < all_nodes.get(current_level).size(); i++) {
 //					System.out.println(i);
 //					System.out.println(sim.simulate(all_nodes.get(current_level)).g)
-					System.out.println("\nCircuit " + i + ":");
-					all_nodes.get(current_level).get(i).circuit.Print();
+//					System.out.println("\nCircuit " + i + ":");
+//					all_nodes.get(current_level).get(i).circuit.Print();
 					int sim_result = sim.simulate(all_nodes.get(current_level).get(i).circuit);
-					System.out.println("RESULT: " + sim_result);
+//					System.out.println("RESULT: " + sim_result);
 					
 					if (sim_result == (sim.outputs.length * sim.outputs[0].length)) {
 						System.out.println("YAY!!!");
@@ -425,10 +425,10 @@ public class LogicBF {
 					current_level = all_nodes.size()-1;
 					System.out.println("Current Level is: "+current_level + " has " + all_nodes.get(current_level).size());
 					for (int i = 0; i < all_nodes.get(current_level).size(); i++) {
-						System.out.println("\nCircuit " + i + ":");
-						all_nodes.get(current_level).get(i).circuit.Print();
+//						System.out.println("\nCircuit " + i + ":");
+//						all_nodes.get(current_level).get(i).circuit.Print();
 						int sim_result = sim.simulate(all_nodes.get(current_level).get(i).circuit);
-						System.out.println("RESULT: " + sim_result);
+//						System.out.println("RESULT: " + sim_result);
 						
 						if (sim_result == (sim.outputs.length * sim.outputs[0].length)) {
 							System.out.println("YAY!!!");
