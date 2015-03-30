@@ -59,7 +59,75 @@ public class LogicBF {
 //		fulladder_outputs[3][0] = true;
 //		fulladder_outputs[3][1] = true;
 		
+		// NOR test
+//		boolean[][] fulladder_inputs = new boolean[4][2];
+//		fulladder_inputs[0][0] = false;
+//		fulladder_inputs[0][1] = false;
+//		fulladder_inputs[1][0] = false;
+//		fulladder_inputs[1][1] = true;
+//		fulladder_inputs[2][0] = true;
+//		fulladder_inputs[2][1] = false;
+//		fulladder_inputs[3][0] = true;
+//		fulladder_inputs[3][1] = true;
+//
+//		boolean[][] fulladder_outputs = new boolean[4][1];
+//		fulladder_outputs[0][0] = true;
+//		fulladder_outputs[1][0] = false;
+//		fulladder_outputs[2][0] = false;
+//		fulladder_outputs[3][0] = false;
+		
+		// custom circuit 2 test
+//		boolean[][] fulladder_inputs = new boolean[4][2];
+//		fulladder_inputs[0][0] = false;
+//		fulladder_inputs[0][1] = false;
+//		fulladder_inputs[1][0] = false;
+//		fulladder_inputs[1][1] = true;
+//		fulladder_inputs[2][0] = true;
+//		fulladder_inputs[2][1] = false;
+//		fulladder_inputs[3][0] = true;
+//		fulladder_inputs[3][1] = true;
+//
+//		boolean[][] fulladder_outputs = new boolean[4][1];
+//		fulladder_outputs[0][0] = true;
+//		fulladder_outputs[1][0] = false;
+//		fulladder_outputs[2][0] = true;
+//		fulladder_outputs[3][0] = true;
+		
 		// XOR test
+		boolean[][] fulladder_inputs = new boolean[4][2];
+		fulladder_inputs[0][0] = false;
+		fulladder_inputs[0][1] = false;
+		fulladder_inputs[1][0] = false;
+		fulladder_inputs[1][1] = true;
+		fulladder_inputs[2][0] = true;
+		fulladder_inputs[2][1] = false;
+		fulladder_inputs[3][0] = true;
+		fulladder_inputs[3][1] = true;
+
+		boolean[][] fulladder_outputs = new boolean[4][1];
+		fulladder_outputs[0][0] = false;
+		fulladder_outputs[1][0] = true;
+		fulladder_outputs[2][0] = true;
+		fulladder_outputs[3][0] = false;
+		
+		// AND test
+//		boolean[][] fulladder_inputs = new boolean[4][2];
+//		fulladder_inputs[0][0] = false;
+//		fulladder_inputs[0][1] = false;
+//		fulladder_inputs[1][0] = false;
+//		fulladder_inputs[1][1] = true;
+//		fulladder_inputs[2][0] = true;
+//		fulladder_inputs[2][1] = false;
+//		fulladder_inputs[3][0] = true;
+//		fulladder_inputs[3][1] = true;
+//
+//		boolean[][] fulladder_outputs = new boolean[4][1];
+//		fulladder_outputs[0][0] = false;
+//		fulladder_outputs[1][0] = false;
+//		fulladder_outputs[2][0] = false;
+//		fulladder_outputs[3][0] = true;
+		
+		// OR test
 //		boolean[][] fulladder_inputs = new boolean[4][2];
 //		fulladder_inputs[0][0] = false;
 //		fulladder_inputs[0][1] = false;
@@ -74,24 +142,7 @@ public class LogicBF {
 //		fulladder_outputs[0][0] = false;
 //		fulladder_outputs[1][0] = true;
 //		fulladder_outputs[2][0] = true;
-//		fulladder_outputs[3][0] = false;
-		
-		// AND test
-		boolean[][] fulladder_inputs = new boolean[4][2];
-		fulladder_inputs[0][0] = false;
-		fulladder_inputs[0][1] = false;
-		fulladder_inputs[1][0] = false;
-		fulladder_inputs[1][1] = true;
-		fulladder_inputs[2][0] = true;
-		fulladder_inputs[2][1] = false;
-		fulladder_inputs[3][0] = true;
-		fulladder_inputs[3][1] = true;
-
-		boolean[][] fulladder_outputs = new boolean[4][1];
-		fulladder_outputs[0][0] = false;
-		fulladder_outputs[1][0] = false;
-		fulladder_outputs[2][0] = false;
-		fulladder_outputs[3][0] = true;
+//		fulladder_outputs[3][0] = true;
 		
 		// real full adder inputs
 //		boolean[][] fulladder_inputs = new boolean[8][3];
@@ -161,7 +212,7 @@ public class LogicBF {
 		c.Print();
 		
 		// test for the first time.
-		if (sim.simulate(c) == c.genes.size()) {
+		if (sim.simulate(c) == (sim.outputs.length * sim.outputs[0].length)) {
 			is_done = true;
 			result = c;
 		} else {
@@ -178,8 +229,8 @@ public class LogicBF {
 //		temp_level_1.add(start_node);
 		temp_level_1 = first_level;
 		
-//		while (!is_done) {
-		for (int a = 0; a < 1; a ++){
+		while (!is_done) {
+//		for (int a = 0; a < 1; a ++){
 //			System.out.println("In while loop");
 			Vector<Node> temp_level_2 = new Vector<Node>();
 			// number of outputs from the circuit and truth table are equal
@@ -205,12 +256,17 @@ public class LogicBF {
 
 					// add AND/OR gates
 					Vector<Object> objects = new Vector();
-					for (int j = 0; j < original_output.size(); j ++) {
-						objects.add(original_output.get(j));
-						System.out.println("OUTPUT: " + original_output.get(j));
+					for (int j = 0; j < original_circuit.genes.size(); j ++) {
+						objects.add(original_circuit.genes.get(j).outputNum);
+//						System.out.println("OUTPUT: " + original_output.get(j));
 					}
+//					for (int j = 0; j < original_output.size(); j ++) {
+//						objects.add(original_output.get(j));
+////						System.out.println("OUTPUT: " + original_output.get(j));
+//					}
 					// add AND
 					MultiCombinations mc_and = new MultiCombinations(objects, 2);
+//					MultiCombinations mc = new MultiCombinations(objects, 2);
 //					mc.print();
 					while (mc_and.hasMoreElements()) {
 //						System.out.println("IN SECOND WHILE");
@@ -223,12 +279,10 @@ public class LogicBF {
 						Vector<Gene> temp_genes = temp_node2.circuit.genes;
 
 						if (temp_node2.circuit.getOutputLines().size() == sim.outputs[0].length) {
-							// doesn't need extra output
-//							System.out.println("EQUAL");
-//							temp_node2.circuit.Print();	
+							// don't need extra output
 							temp_level_2.add(temp_node2);
 						} else {
-							// does need extra output
+							// do need extra output
 							// add one more NONE
 							for (int j = 0; j < temp_genes.size(); j++) {
 								Node temp_node3 = new Node(copyCircuit(temp_node2.circuit));
@@ -280,12 +334,11 @@ public class LogicBF {
 				/*************************************/
 				current_level = all_nodes.size()-1;
 				System.out.println("Current Level is: "+current_level + " has " + all_nodes.get(current_level).size());
-				for (int i = 0; i < all_nodes.get(current_level).size() - 1; i++) {
+				for (int i = 0; i < all_nodes.get(current_level).size(); i++) {
 //					System.out.println(i);
 //					System.out.println(sim.simulate(all_nodes.get(current_level)).g)
 					System.out.println("\nCircuit " + i + ":");
 					all_nodes.get(current_level).get(i).circuit.Print();
-					
 					int sim_result = sim.simulate(all_nodes.get(current_level).get(i).circuit);
 					System.out.println("RESULT: " + sim_result);
 					
@@ -334,7 +387,7 @@ public class LogicBF {
 						Vector<Object> objects = new Vector();
 						for (int j = 0; j < original_output.size(); j ++) {
 							objects.add(original_output.get(j));
-							System.out.println("OUTPUT: " + original_output.get(j));
+//							System.out.println("OUTPUT: " + original_output.get(j));
 						}
 						
 						
@@ -353,12 +406,35 @@ public class LogicBF {
 								temp_level_2.add(temp_node2);
 								temp_level_2.add(temp_node3);
 								
-								temp_node2.circuit.Print();
-								System.out.println(temp_node2.circuit.getOutputLines().size());
-								temp_node3.circuit.Print();
-								System.out.println(temp_node3.circuit.getOutputLines().size());
-								
+//								temp_node2.circuit.Print();
+//								System.out.println(temp_node2.circuit.getOutputLines().size());
+//								temp_node3.circuit.Print();
+//								System.out.println(temp_node3.circuit.getOutputLines().size());
+//								
 							}
+						}
+					}
+					all_nodes.add(temp_level_2);
+				}
+				diff = temp_level_2.get(0).circuit.getOutputLines().size() - sim.outputs[0].length;
+//				System.out.println("NEW DIFF 2: " + diff);
+				if (diff == 0) {
+					/*************************************/
+					/** test all circuits in this level **/
+					/*************************************/
+					current_level = all_nodes.size()-1;
+					System.out.println("Current Level is: "+current_level + " has " + all_nodes.get(current_level).size());
+					for (int i = 0; i < all_nodes.get(current_level).size(); i++) {
+						System.out.println("\nCircuit " + i + ":");
+						all_nodes.get(current_level).get(i).circuit.Print();
+						int sim_result = sim.simulate(all_nodes.get(current_level).get(i).circuit);
+						System.out.println("RESULT: " + sim_result);
+						
+						if (sim_result == (sim.outputs.length * sim.outputs[0].length)) {
+							System.out.println("YAY!!!");
+							is_done = true;
+							result = all_nodes.get(current_level).get(i).circuit;
+							break;
 						}
 					}
 				}
@@ -377,5 +453,5 @@ public class LogicBF {
 		result.Print();
         System.out.println("Logic Non-GA, Brute Force END");
 	}
-
+	
 }
