@@ -38,16 +38,14 @@ public class LogicGA {
         test2.genes.add(new Gene(1,"NONE",new Vector(Arrays.asList(arr))));
         arr = new Integer[]{2};
         test2.genes.add(new Gene(2,"NONE",new Vector(Arrays.asList(arr))));
-        arr = new Integer[]{1};
+        arr = new Integer[]{1,2};
         test2.genes.add(new Gene(3,"AND",new Vector(Arrays.asList(arr))));
-        arr = new Integer[]{2};
+        arr = new Integer[]{2,1};
         test2.genes.add(new Gene(4,"OR",new Vector(Arrays.asList(arr))));
         arr = new Integer[]{1,4};
         test2.genes.add(new Gene(5,"AND",new Vector(Arrays.asList(arr))));
         arr = new Integer[]{2,3};
         test2.genes.add(new Gene(6,"OR",new Vector(Arrays.asList(arr))));
-        arr = new Integer[]{5,6};
-        test2.genes.add(new Gene(7,"OR",new Vector(Arrays.asList(arr))));
        // Simulator s = new Simulator(new boolean[][]{{false,false},{false,true},{true,false},{true,true}},
         //        new boolean[][]{{false},{true},{true},{false}});
         //System.out.println(s.simulate(test));
@@ -58,36 +56,27 @@ public class LogicGA {
             System.out.println(e.getMessage());
         }*/
         Circuit children[] = reproduce(test, test2);
+        children[0].Print();
+        System.out.println("");
+        children[1].Print();
 
     }
     //returns 2 offspring
     static Circuit[] reproduce(Circuit momma, Circuit papa){
         Circuit children[] = new Circuit[2];//prepare offspring
+        children[0] = new Circuit();
+        children[1] = new Circuit();
         int cuttingPoint = randInt(0,Math.min(momma.genes.size(), papa.genes.size()));
         //now kith
-        if(momma.genes.size() <  papa.genes.size()) {
-            for (int i = 0; i < cuttingPoint; i++) {
-                children[0].genes.addElement(momma.genes.elementAt(i));
-                children[1].genes.addElement(momma.genes.elementAt(i));
-            }
-            int j = 0;
-            for (int i = cuttingPoint; i < momma.genes.size(); i++) {
-                children[0].genes.addElement(papa.genes.elementAt(i));
-                children[1].genes.add(j,papa.genes.elementAt(i));
-                ++j;
-            }
+        for (int i = 0; i < cuttingPoint; i++) {
+            children[0].genes.addElement(papa.genes.elementAt(i));
+            children[1].genes.addElement(momma.genes.elementAt(i));
         }
-        if (momma.genes.size() >  papa.genes.size()) {
-            for (int i = 0; i < cuttingPoint; i++) {
-                children[0].genes.addElement(papa.genes.elementAt(i));
-                children[1].genes.addElement(papa.genes.elementAt(i));
-            }
-            int j = 0;
-            for (int i = cuttingPoint; i < momma.genes.size(); i++) {
-                children[0].genes.addElement(momma.genes.elementAt(i));
-                children[1].genes.add(j,momma.genes.elementAt(i));
-                ++j;
-            }
+        for (int i = cuttingPoint; i < papa.genes.size(); i++) {
+            children[1].genes.addElement(papa.genes.elementAt(i));
+        }
+        for (int i = cuttingPoint; i < momma.genes.size(); i++) {
+            children[0].genes.addElement(momma.genes.elementAt(i));
         }
         return children;
     }
