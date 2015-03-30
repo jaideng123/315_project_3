@@ -25,6 +25,7 @@ public class Simulator {
 
     public int simulate(Circuit circ){
         Vector<int[]> results = new Vector<int[]>();
+        //run with all possible input combinations
         for (int i = 0; i < inputs.length; i++) {
             results.addElement(test(circ,i));
             if(results.elementAt(i).length == 0)
@@ -34,7 +35,7 @@ public class Simulator {
         int num_found[] = new int[outputs[0].length];
 
         java.util.Arrays.fill(matched,false);
-        //columns
+        //look at each column of results
         for (int i = 0; i < circ.genes.size()*2; i++) {
             //look at each output value we're looking for
             for (int j = 0; j < outputs[0].length; j++) {
@@ -65,16 +66,17 @@ public class Simulator {
         int num_inputs = 0;
         for (int i = 0; i< circ.genes.size();++i) {
             Gene current = circ.genes.elementAt(i);
-            //fill in missing inputs
+            //fill in missing inputs from truth table
             for (int j = 0; j < current.inputs.size(); ++j) {
                 if (values[current.inputs.elementAt(j)] == -1) {
-                    values[current.inputs.elementAt(j)] = inputs[input][num_inputs] ? 1 : 0;
-                    num_inputs++;
-                    if (num_inputs > inputs[0].length) {
+                    if (num_inputs+1 > inputs[0].length) {
                         return new int[]{};
                     }
+                    values[current.inputs.elementAt(j)] = inputs[input][num_inputs] ? 1 : 0;
+                    num_inputs++;
                 }
             }
+            //match with gate type
             if (current.type == "None") {
                 values[current.outputNum] = values[current.inputs.firstElement()];
             } else if (current.type == "And") {
