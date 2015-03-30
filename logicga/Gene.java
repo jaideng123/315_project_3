@@ -23,7 +23,25 @@ public class Gene {
         inputs = input;
         
     }
-    
+     //changes the gate
+    public void mutate(){
+    	Random r1 = new Random();
+    	int mutation = r1.nextInt(3)+1;
+    	switch (mutation){
+    	case 1:{
+    		type = "AND";
+    	}
+    	case 2:{
+    		type = "OR";
+    	}
+    	case 3:{
+    		type = "NOT";
+    	}
+    	default:
+    		System.out.println("No Gene change...");
+    	}
+    	
+    }
     public void Print(){
         System.out.println(outputNum + " " + type + " "+ inputs);
     }
