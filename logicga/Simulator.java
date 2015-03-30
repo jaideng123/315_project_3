@@ -75,23 +75,23 @@ public class Simulator {
                     }
                 }
             }
-            if (current.type == "NONE") {
+            if (current.type == "None") {
                 values[current.outputNum] = values[current.inputs.firstElement()];
-            } else if (current.type == "AND") {
+            } else if (current.type == "And") {
                 int result = 1;
                 for(int inp : current.inputs){
                     if(values[inp] == 0)
                         result = 0;
                 }
                 values[current.outputNum] = result;
-            } else if (current.type == "OR") {
+            } else if (current.type == "Or") {
                 int result = 0;
                 for(int inp : current.inputs){
                     if(values[inp] == 1)
                         result = 1;
                 }
                 values[current.outputNum] = result;
-            } else if (current.type == "NOT") {
+            } else if (current.type == "Not") {
                 if (values[current.inputs.firstElement()] == 1)
                     values[current.outputNum] = 0;
                 else
