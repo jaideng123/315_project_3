@@ -1,5 +1,6 @@
-package logicga;
+//package logicga;
 
+import java.util.PriorityQueue;
 import java.util.Vector;
 
 /**
@@ -7,10 +8,10 @@ import java.util.Vector;
  * @author Eric C C
  */
 public class Population {
-    Circuit[] population;
-    //    Priority_Queue<Circuit> population;
-    public Population(int populationSize){
-        population = new Circuit[populationSize];
+//    Circuit[] population;
+    PriorityQueue<Circuit> population;
+    public Population(){
+        population = new PriorityQueue<Circuit>();
         
         for(int i =0 ; i <getSize() ; i++){
             //Mutate Circuit
@@ -18,21 +19,23 @@ public class Population {
             //child = reproduction();
         }
     }
-    //gets Circuit at index
-     public Circuit getAt(int index){
-    	return population[index];
+    
+    public Circuit peekTopCircuit(){
+    	return population.peek();
     }
-    //sets a Circuit at index
-    public void setAt(int i, Circuit a){
-    	population[i] = a;
+    public Circuit getTopCircuit(){
+    	return population.poll();
     }
     
+    public void add(Circuit a){
+    	population.add(a);
+    }
 //    public Circuit reproduction() {
 //        
 //    }
     
     public int getSize(){
-        return population.length;
+        return population.size();
     }
    
     
