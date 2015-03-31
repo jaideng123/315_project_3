@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package logicga;
+//package logicga;
 
 import java.util.*;
 import java.io.*;
@@ -17,7 +17,7 @@ import java.util.Scanner;
  */
  // need Comparable for natural ordering for a Priority Queue
 public class Circuit implements Comparable<Circuit> {
-    Vector<Gene> genes = new Vector<Gene>();
+    Vector<Gene> genes;
     String aFile;
     int numNots = 0;
     boolean simulated = false;
@@ -34,19 +34,25 @@ public class Circuit implements Comparable<Circuit> {
     	Random r2 = new Random();
     	int mutation = r1.nextInt(4)+1;
     	int output;
+    	Vector<Integer> newInputs = new Vector<Integer>();
     	switch (mutation){
-//    	case 1:{
-//    		 output = r1.nextInt(genes.size())+1;
-//    		 addGate(output, "AND",  );
+    	case 1:{
+    		 output = r1.nextInt(genes.size())+1;
+    		 
+//    		 genes.add(new Gene(output, "AND", ))
 //    	}
 //    	case 2:{
 //    		addGate(output, "OR", );
-//    	}
-//    	case 3:{
-//    		addGate(output, "NOT", );
-//    	}
+    	}
+    	case 3:{
+    		output = r1.nextInt(genes.size())+1;
+    		newInputs.addElement(r2.nextInt(genes.size())+1);
+    		addGate(output, "NOT", newInputs );
+    		
+    	}
+    	//change a gene
     	case 4:{
-    		int index = r2.nextInt(genes.size()) +1;
+    		int index = r1.nextInt(genes.size()) +1;
     		genes.get(index).mutate();
     	}
     	    		
@@ -92,13 +98,16 @@ public class Circuit implements Comparable<Circuit> {
                    }
                }
            }
+           
            //The genes will be stored in the order they appear in text
            addGate(outputNum,type,inputs);
 //           genes.add(new Gene(outputNum,type,inputs));
 //           if (type.equals("Not")) {
 //        	   n_not ++;
 //           }
-       }  
+       }
+        textReader.close();
+       
     }
     
     public void Print(){
@@ -111,7 +120,7 @@ public class Circuit implements Comparable<Circuit> {
      * I added functions below. Please revise them.
      * Sijine 
      */
-    public boolean addGate(int output, String gateType, Vector input){
+    public boolean addGate(int output, String gateType, Vector<Integer> input){
     	if (gateType.equals("Not") && numNots == 2) {
     		return false;
     	} else {
@@ -131,7 +140,7 @@ public class Circuit implements Comparable<Circuit> {
     	// I assumed input from first NONE lines are declared as inputs.
     	// Also, logically, it should be only one input for NONE gate.
     	// And one input and one output should be same number.
-    	Vector<Integer> result = new Vector();
+    	Vector<Integer> result = new Vector<Integer>();
     	if (genes.size() > 0) {
     		for (int i = 0; i < genes.size(); i++) {
     			if (genes.get(i).type.equals("None")) {
@@ -194,6 +203,8 @@ public class Circuit implements Comparable<Circuit> {
 		return 0;
 	}
 
+   
+    
     public void testCircuit(Simulator s){
         numGoalsReached = s.simulate(this);
         simulated = true;
