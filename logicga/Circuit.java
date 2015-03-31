@@ -19,7 +19,9 @@ import java.util.Scanner;
 public class Circuit implements Comparable<Circuit> {
     Vector<Gene> genes = new Vector<Gene>();
     String aFile;
-    int n_not = 0;
+    int numNots = 0;
+    boolean simulated = false;
+    int numGoalsReached = 0;
     int fitness;
     
     public Circuit(){
@@ -45,13 +47,13 @@ public class Circuit implements Comparable<Circuit> {
     	case 4:{
     		int index = r2.nextInt(genes.size()) +1;
     		genes.get(index).mutate();
-    		
     	}
     	    		
     	
     	default:
     		System.out.println("Could not mutate...");
     	}
+        simulated = false;
     }
     public void getFromFile(int populationIndex)throws IOException{
         //Fix for generic case
@@ -101,12 +103,12 @@ public class Circuit implements Comparable<Circuit> {
      * Sijine 
      */
     public boolean addGate(int output, String gateType, Vector input){
-    	if (gateType.equals("Not") && n_not == 2) {
+    	if (gateType.equals("Not") && numNots == 2) {
     		return false;
     	} else {
     		genes.add(new Gene(output, gateType, input));
         	if (gateType.equals("Not")) {
-         	   n_not ++;
+         	   numNots ++;
             }
         	return true;
     	}
@@ -184,5 +186,15 @@ public class Circuit implements Comparable<Circuit> {
 			return GREATER;
 		return 0;
 	}
+    public void calculateFitness(Simulator s){
+        if(!simulated)
+            testCircuit(s);
+        fitness = 1000000*(numGoalsReached)+ 10000*(numNots) + 10*(genes.size()-numNots);
+    }
+
+    public void testCircuit(Simulator s){
+        numGoalsReached = s.simulate(this);
+        simulated = true;
+    }
 
 }
