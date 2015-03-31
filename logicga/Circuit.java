@@ -23,6 +23,7 @@ public class Circuit implements Comparable<Circuit> {
     boolean simulated = false;
     int numGoalsReached = 0;
     int fitness;
+
     
     public Circuit(){
         genes = new Vector<Gene>();
@@ -54,6 +55,14 @@ public class Circuit implements Comparable<Circuit> {
     		System.out.println("Could not mutate...");
     	}
         simulated = false;
+    }
+    public int calculateFitness(Simulator s){
+        //cache result if recalculation isnt needed
+        if(!simulated) {
+            testCircuit(s);
+            fitness = 1000000 * (numGoalsReached) + 10000 * (numNots) + 10 * (genes.size() - numNots);
+        }
+        return fitness;
     }
     public void getFromFile(int populationIndex)throws IOException{
         //Fix for generic case
@@ -186,11 +195,6 @@ public class Circuit implements Comparable<Circuit> {
 			return GREATER;
 		return 0;
 	}
-    public void calculateFitness(Simulator s){
-        if(!simulated)
-            testCircuit(s);
-        fitness = 1000000*(numGoalsReached)+ 10000*(numNots) + 10*(genes.size()-numNots);
-    }
 
     public void testCircuit(Simulator s){
         numGoalsReached = s.simulate(this);
