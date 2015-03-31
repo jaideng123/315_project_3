@@ -12,7 +12,7 @@ import java.lang.Math;
  * @author Eric C C
  */
 public class LogicGA {
-
+    static int POP_SIZE = 1000;
     /**
      * @param args the command line arguments
      */

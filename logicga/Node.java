@@ -42,6 +42,6 @@ public class Node {
     }
     
     public int getNots() {
-    	return circuit.n_not;
+    	return circuit.numNots;
     }
 }

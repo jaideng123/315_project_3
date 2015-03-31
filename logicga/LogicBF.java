@@ -114,7 +114,7 @@ public class LogicBF {
 		boolean[][] inverse_outputs = new boolean[8][3];
 		for (int i = 0; i < 8; i ++) {
 			for (int j = 0; j < 3; j ++) {
-				inverse_outputs[i][j] = !inverse_outputs[i][j];
+				inverse_outputs[i][j] = !inverse_inputs[i][j];
 			}
 		}
 

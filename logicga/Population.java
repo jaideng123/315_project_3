@@ -1,4 +1,4 @@
-//package logicga;
+package logicga;
 
 import java.util.PriorityQueue;
 import java.util.Vector;
