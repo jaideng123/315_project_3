@@ -145,8 +145,6 @@ public class Circuit implements Comparable<Circuit> {
     }
     
     public Vector<Integer> getOutputLines() {
-        Set<Integer> inputSet = new HashSet<Integer>();
-        Set<Integer> outputSet = new HashSet<Integer>();
     	Vector<Integer> inputVec = new Vector<Integer>();
         inputVec = getInputLines();
         Vector<Integer> result = new Vector<Integer>();
