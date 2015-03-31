@@ -80,6 +80,17 @@ public class LogicGA {
         }
         return children;
     }
+     public static Population select(Population oldPop,int cutoff){
+    	Population newPop = new Population();
+    	int portion = POP_SIZE * (cutoff/100);
+    	
+    	for(int i = 0;i<portion;i++){
+    		newPop.add(oldPop.getTopCircuit());
+    	}
+    	oldPop.population.clear();
+    	
+    	return newPop;
+    }
     public static int randInt(int min, int max) {
 
         // NOTE: Usually this should be a field rather than a method
