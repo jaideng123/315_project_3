@@ -4,8 +4,9 @@
  * and open the template in the editor.
  */
 
-package logicga;
+//package logicga;
 
+import java.util.Random;
 import java.util.Vector;
 
 /**
@@ -17,7 +18,7 @@ public class Gene {
     String type;
     Vector<Integer> inputs = new Vector<Integer>();
 
-    public Gene(int output, String gateType, Vector input){
+    public Gene(int output, String gateType, Vector<Integer> input){
         outputNum = output;
         type = gateType;
         inputs = input;
@@ -35,6 +36,15 @@ public class Gene {
     		type = "OR";
     	}
     	case 3:{
+    		Random r2 = new Random();
+    		int in = r2.nextInt(inputs.size());
+    		while(inputs.get(in)==outputNum){ // Check for input and output equality
+    			in = r2.nextInt(inputs.size());
+    		}
+    		int temp = inputs.get(in); //randomly select input to change to
+    		inputs.clear();
+    		inputs.addElement(temp);//set inputs to selected value
+    		
     		type = "NOT";
     	}
     	default:
@@ -42,6 +52,9 @@ public class Gene {
     	}
     	
     }
+    
+ 
+    
     public void Print(){
         System.out.println(outputNum + " " + type + " "+ inputs);
     }
