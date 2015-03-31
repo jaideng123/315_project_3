@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-//package logicga;
+package logicga;
 
 import java.util.Random;
 import java.util.Vector;
