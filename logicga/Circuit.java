@@ -40,7 +40,7 @@ public class Circuit implements Comparable<Circuit> {
 		 	output = genes.size()+1;
 			newInputs.addElement(randInt(0,genes.size()-1));
 			newInputs.addElement(randInt(0,genes.size()-1));
-			genes.add(new Gene(output, "AND", newInputs));
+			genes.add(new Gene(output, "And", newInputs));
 			break;
 		}
 		//add OR gate
@@ -48,21 +48,26 @@ public class Circuit implements Comparable<Circuit> {
 			output = genes.size()+1;
 			newInputs.addElement(randInt(0,genes.size()-1));
 			newInputs.addElement(randInt(0,genes.size()-1));
-			genes.add(new Gene(output, "OR", newInputs));
+			genes.add(new Gene(output, "Or", newInputs));
 			break;
 		}
 		//add NOT gate
     	case 3:{
     		output = genes.size()+1;
     		newInputs.addElement(randInt(0,genes.size()-1));
-    		genes.add(new Gene(output, "NOT", newInputs) );
+    		genes.add(new Gene(output, "Not", newInputs));
+			numNots++;
     		break;
     		
     	}
     	//change a gene
     	case 4:{
     		int index = randInt(0,genes.size()-1) ;
+			if(genes.elementAt(index).type == "Not")
+				numNots--;
     		genes.get(index).mutate();
+			if(genes.elementAt(index).type == "Not")
+				numNots++;
     		break;
     	}
     	    		

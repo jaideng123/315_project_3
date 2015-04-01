@@ -31,12 +31,12 @@ public class Gene {
     	switch (mutation){
     	//changes to AND
     	case 1:{
-    		type = "AND";
+    		type = "And";
     		break;
     	}
     	//changes to OR
     	case 2:{
-    		type = "OR";
+    		type = "Or";
     		break;
     	}
     	//changes to NOT
@@ -50,7 +50,7 @@ public class Gene {
     		inputs.clear();
     		inputs.addElement(temp);//set inputs to selected value
     		
-    		type = "NOT";
+    		type = "Not";
     		break;
     	}
     	default:

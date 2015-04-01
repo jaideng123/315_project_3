@@ -318,6 +318,9 @@ public class LogicGA {
             }
             int r = randInt(1,inputs*5);
             for (int i = 0; i < r; i++) {
+                Gene g = randomGate(c);
+                if(g.type == "Not")
+                    c.numNots++;
                 c.genes.add(randomGate(c));
             }
             c.calculateFitness(s);
