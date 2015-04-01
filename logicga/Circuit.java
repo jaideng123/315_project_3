@@ -121,7 +121,7 @@ public class Circuit implements Comparable<Circuit> {
      * Sijine 
      */
     public boolean addGate(int output, String gateType, Vector<Integer> input){
-    	if (gateType.equals("Not") && numNots == 2 || exists(output,gateType,input)) {
+    	if (gateType.equals("Not") && numNots == 2 || exists(gateType,input)) {
     		return false;
     	} else {
     		genes.add(new Gene(output, gateType, input));
@@ -131,9 +131,9 @@ public class Circuit implements Comparable<Circuit> {
         	return true;
     	}
     }
-    public boolean exists(int output, String gateType, Vector<Integer> input){
+    public boolean exists( String gateType, Vector<Integer> input){
         for(Gene g : genes){
-            if(g.type == gateType && g.inputs == input){
+            if(g.type == gateType && g.inputs.equals(input)){
                 return true;
             }
         }
