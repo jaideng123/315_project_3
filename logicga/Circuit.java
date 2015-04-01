@@ -71,13 +71,13 @@ public class Circuit implements Comparable<Circuit> {
     		System.out.println("Could not mutate...");
     		break;
     	}
-//        simulated = false;
+        simulated = false;
     }
     public int calculateFitness(Simulator s){
         //cache result if recalculation isnt needed
         if(!simulated) {
             testCircuit(s);
-            fitness = 1000000 * (numGoalsReached) + 10000 * (numNots) + 10 * (genes.size() - numNots);
+            fitness = 1000000 * (s.outputs[0].length*s.outputs.length-numGoalsReached) + 10000 * (numNots) + 10 * (genes.size() - numNots);
         }
         return fitness;
     }

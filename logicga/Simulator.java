@@ -82,6 +82,8 @@ public class Simulator {
             }
             else if (current.type == "And") {
                 int result = 1;
+                if(current.inputs.size() < 2)
+                    System.out.println("Bad Gate");
                 for(int inp : current.inputs){
                     if(values[inp] == 0)
                         result = 0;
@@ -90,6 +92,8 @@ public class Simulator {
             }
             else if (current.type == "Or") {
                 int result = 0;
+                if(current.inputs.size() < 2)
+                    System.out.println("Bad Gate");
                 for(int inp : current.inputs){
                     if(values[inp] == 1)
                         result = 1;

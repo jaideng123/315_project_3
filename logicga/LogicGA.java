@@ -226,7 +226,8 @@ public class LogicGA {
         }
         Population p = initialPopulation(sim.inputs[0].length,POP_SIZE,sim);
         boolean solutionFound = false;
-        int cutoff = (int) (POP_SIZE * 0.99);
+        double percent = .99;
+        int cutoff = (int) (POP_SIZE * percent);
         while (!solutionFound){
             p = select(p,cutoff);
             //Repopulate ( ͡° ͜ʖ ͡°)
@@ -239,15 +240,27 @@ public class LogicGA {
             }
             int numMutations = randInt(0,POP_SIZE);
             for (int i = 0; i <numMutations; i++) {
-                int target = randInt(0,p.getSize()-1);
+                int target = randInt(100,p.getSize()-1);
                 Circuit c = (Circuit)p.population.toArray()[target];
                 p.population.remove(c);
                 c.mutate();
+                c.calculateFitness(sim);
                 p.add(c);
             }
             if(p.peekTopCircuit().numGoalsReached == sim.outputs.length * sim.outputs[0].length &&
                     p.peekTopCircuit().numNots <= 2)
                 solutionFound = true;
+            if(percent > 0.20)
+                percent -= 0.01;
+            cutoff = (int) (POP_SIZE * percent);
+            System.out.println(p.peekTopCircuit().calculateFitness(sim));
+            Circuit c = (Circuit)p.population.toArray()[0];
+            System.out.println(c.calculateFitness(sim));
+            c = (Circuit)p.population.toArray()[1];
+            System.out.println(c.calculateFitness(sim));
+            c = p.peekTopCircuit();
+            System.out.println(c.calculateFitness(sim));
+            solutionFound = true;
         }
     }
     //returns 2 offspring
@@ -272,7 +285,6 @@ public class LogicGA {
      public static Population select(Population oldPop,int cutoff){
     	Population newPop = new Population();
     	int portion = cutoff;
-    	System.out.println(portion);
     	for(int i = 0;i<portion;i++){
     		newPop.add(oldPop.getTopCircuit());
     	}
