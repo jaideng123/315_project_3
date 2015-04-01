@@ -231,13 +231,19 @@ public class LogicGA {
         while (!solutionFound){
             p = select(p,cutoff);
             //Repopulate ( ͡° ͜ʖ ͡°)
-            while(p.getSize()  < POP_SIZE){
+            while(p.getSize()  < POP_SIZE+10){
                 int mama = randInt(0,p.getSize()-1);
                 int papa = randInt(0,p.getSize()-1);
-                Circuit offspring[] = reproduce((Circuit)p.population.toArray()[mama],(Circuit)p.population.toArray()[papa]);
+                Circuit c1 = (Circuit)p.population.toArray()[mama];
+                Circuit c2 = (Circuit)p.population.toArray()[papa];
+                Circuit offspring[] = reproduce(c1,c2);
+                offspring[0].calculateFitness(sim);
+                offspring[1].calculateFitness(sim);
                 p.add(offspring[0]);
                 p.add(offspring[1]);
+                break;
             }
+            //Mutate a random number of times
             int numMutations = randInt(0,POP_SIZE);
             for (int i = 0; i <numMutations; i++) {
                 int target = randInt(100,p.getSize()-1);
@@ -247,20 +253,16 @@ public class LogicGA {
                 c.calculateFitness(sim);
                 p.add(c);
             }
-            if(p.peekTopCircuit().numGoalsReached == sim.outputs.length * sim.outputs[0].length &&
-                    p.peekTopCircuit().numNots <= 2)
-                solutionFound = true;
             if(percent > 0.20)
                 percent -= 0.01;
             cutoff = (int) (POP_SIZE * percent);
             System.out.println(p.peekTopCircuit().calculateFitness(sim));
-            Circuit c = (Circuit)p.population.toArray()[0];
-            System.out.println(c.calculateFitness(sim));
-            c = (Circuit)p.population.toArray()[1];
-            System.out.println(c.calculateFitness(sim));
-            c = p.peekTopCircuit();
-            System.out.println(c.calculateFitness(sim));
-            solutionFound = true;
+            if(p.peekTopCircuit().numGoalsReached == sim.outputs.length * sim.outputs[0].length &&
+                    p.peekTopCircuit().numNots <= 2){
+                System.out.println("Circuit Found!");
+                p.peekTopCircuit().Print();
+                solutionFound = true;
+            }
         }
     }
     //returns 2 offspring
@@ -309,7 +311,7 @@ public class LogicGA {
         for (int j = 0; j < size; j++) {
             //set up base for circuit
             Circuit c = new Circuit();
-            for (int i = 0; i < inputs; i++) {
+            for (int i = 1; i < inputs+1; i++) {
                 Vector<Integer> in = new Vector<Integer>();
                 in.addElement(i);
                 c.genes.add(new Gene(i, "None", in));

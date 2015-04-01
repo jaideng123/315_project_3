@@ -214,6 +214,7 @@ public class Circuit implements Comparable<Circuit> {
 		int GREATER = 1;
 		
 		if(fitness < a.fitness)
+		if(fitness < a.fitness)
 			return LESS;
 		if(fitness == a.fitness)
 			return EQUAL;

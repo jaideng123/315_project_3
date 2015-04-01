@@ -12,12 +12,7 @@ public class Population {
     PriorityQueue<Circuit> population;
     public Population(){
         population = new PriorityQueue<Circuit>();
-        
-        for(int i =0 ; i <getSize() ; i++){
-            //Mutate Circuit
-            Circuit child = new Circuit();
-            //child = reproduction();
-        }
+
     }
     
     public Circuit peekTopCircuit(){
