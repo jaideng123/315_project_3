@@ -23,9 +23,7 @@ public class Population {
     public Circuit peekTopCircuit(){
     	return population.peek();
     }
-    public Circuit getTopCircuit(){
-    	return population.poll();
-    }
+    public Circuit getTopCircuit(){return population.poll();}
     
     public void add(Circuit a){
     	population.add(a);

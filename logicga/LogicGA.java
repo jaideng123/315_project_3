@@ -224,8 +224,31 @@ public class LogicGA {
                 sim = new Simulator(custom_inputs, custom_outputs);
                 break;
         }
-        Population p = null;
-
+        Population p = initialPopulation(sim.inputs[0].length,POP_SIZE,sim);
+        boolean solutionFound = false;
+        int cutoff = (int) (POP_SIZE * 0.99);
+        while (!solutionFound){
+            p = select(p,cutoff);
+            //Repopulate ( ͡° ͜ʖ ͡°)
+            while(p.getSize()  < POP_SIZE){
+                int mama = randInt(0,p.getSize()-1);
+                int papa = randInt(0,p.getSize()-1);
+                Circuit offspring[] = reproduce((Circuit)p.population.toArray()[mama],(Circuit)p.population.toArray()[papa]);
+                p.add(offspring[0]);
+                p.add(offspring[1]);
+            }
+            int numMutations = randInt(0,POP_SIZE);
+            for (int i = 0; i <numMutations; i++) {
+                int target = randInt(0,p.getSize()-1);
+                Circuit c = (Circuit)p.population.toArray()[target];
+                p.population.remove(c);
+                c.mutate();
+                p.add(c);
+            }
+            if(p.peekTopCircuit().numGoalsReached == sim.outputs.length * sim.outputs[0].length &&
+                    p.peekTopCircuit().numNots <= 2)
+                solutionFound = true;
+        }
     }
     //returns 2 offspring
     static Circuit[] reproduce(Circuit momma, Circuit papa){
@@ -248,8 +271,8 @@ public class LogicGA {
     }
      public static Population select(Population oldPop,int cutoff){
     	Population newPop = new Population();
-    	int portion = POP_SIZE * (cutoff/100);
-    	
+    	int portion = cutoff;
+    	System.out.println(portion);
     	for(int i = 0;i<portion;i++){
     		newPop.add(oldPop.getTopCircuit());
     	}
@@ -269,7 +292,7 @@ public class LogicGA {
 
         return randomNum;
     }
-    public static Population initialPop(int inputs, int size, Simulator s){
+    public static Population initialPopulation(int inputs, int size, Simulator s){
         Population initial = new Population();
         for (int j = 0; j < size; j++) {
             //set up base for circuit
