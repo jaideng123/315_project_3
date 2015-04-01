@@ -30,8 +30,9 @@ public class Node {
 		noutput = outputlines.size();
 	}
 	
-    public void addGate(int output, String gateType, Vector input){
+    public boolean addGate(int output, String gateType, Vector input){
     	blocked = !circuit.addGate(output, gateType, input);
+        return !blocked;
     }
 
     public Vector<Integer> getOutputlines(){

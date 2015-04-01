@@ -133,7 +133,7 @@ public class Circuit implements Comparable<Circuit> {
     }
     public boolean exists(int output, String gateType, Vector<Integer> input){
         for(Gene g : genes){
-            if(g.type == gateType && g.inputs == input && g.outputNum == output){
+            if(g.type == gateType && g.inputs == input){
                 return true;
             }
         }

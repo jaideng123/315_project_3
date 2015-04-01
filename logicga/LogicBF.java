@@ -286,8 +286,7 @@ public class LogicBF {
 			Vector<Node> temp_level_2 = new Vector<Node>();
 			// number of outputs from the circuit and truth table are equal
 			if (diff == 0) {
-				// add gates first AND/OR
-				// because they are all failed circuits
+				// add NOT Gateas
 				for (int i = 0; i < temp_level_1.size(); i++) {
 					Circuit original_circuit = copyCircuit(temp_level_1.get(i).circuit);
 					Node original_node = new Node(original_circuit);
@@ -299,8 +298,8 @@ public class LogicBF {
 							Node temp_node1 = new Node(copyCircuit(original_circuit));
 							Vector<Integer> temp_inputs = new Vector<Integer>();
 							temp_inputs.add(original_output.get(j));
-							temp_node1.addGate(temp_node1.circuit.genes.size()+1, "Not", temp_inputs);
-							temp_level_2.add(temp_node1);
+							if(temp_node1.addGate(temp_node1.circuit.genes.size()+1, "Not", temp_inputs))
+							    temp_level_2.add(temp_node1);
 						}
 					}
 
@@ -316,27 +315,28 @@ public class LogicBF {
 						Vector<Integer> temp_inputs = new Vector<Integer>();
 						Node temp_node2 = new Node(copyCircuit(original_circuit));
 						for (int j = 0; j < mc_and.nextElement().length; j++) {
-							temp_inputs.add(Integer.parseInt(mc_and.nextElement()[j].toString()));
-						}
-						temp_node2.addGate(temp_node2.circuit.genes.size()+1, "And", temp_inputs);
-						Vector<Gene> temp_genes = temp_node2.circuit.genes;
+                            temp_inputs.add(Integer.parseInt(mc_and.nextElement()[j].toString()));
+                        }
+						if(temp_node2.addGate(temp_node2.circuit.genes.size()+1, "And", temp_inputs)) {
+                            Vector<Gene> temp_genes = temp_node2.circuit.genes;
 
-						if (temp_node2.circuit.getOutputLines().size() == sim.outputs[0].length) {
-							// don't need extra output
-							temp_level_2.add(temp_node2);
-						} else {
-							// do need extra output
-							// add one more NONE
-							for (int j = 0; j < temp_genes.size(); j++) {
-								Node temp_node3 = new Node(copyCircuit(temp_node2.circuit));
-								Vector<Integer> temp_inputs2 = new Vector<Integer>();
-								temp_inputs2.add(temp_genes.get(j).outputNum);
-								temp_node3.addGate(temp_genes.size() + 1, "None", temp_inputs2);
-								temp_level_2.add(temp_node3);
-							}
-						}
+                            if (temp_node2.circuit.getOutputLines().size() == sim.outputs[0].length) {
+                                // don't need extra output
+                                temp_level_2.add(temp_node2);
+                            } else {
+                                // do need extra output
+                                // add one more NONE
+                                for (int j = 0; j < temp_genes.size(); j++) {
+                                    Node temp_node3 = new Node(copyCircuit(temp_node2.circuit));
+                                    Vector<Integer> temp_inputs2 = new Vector<Integer>();
+                                    temp_inputs2.add(temp_genes.get(j).outputNum);
+                                    temp_node3.addGate(temp_genes.size() + 1, "None", temp_inputs2);
+                                    temp_level_2.add(temp_node3);
+                                }
+                            }
+                        }
 					}
-					
+
 					// add OR
 					MultiCombinations mc_or = new MultiCombinations(objects, 2);
 					while (mc_or.hasMoreElements()) {
@@ -345,24 +345,25 @@ public class LogicBF {
 						for (int j = 0; j < mc_or.nextElement().length; j++) {
 							temp_inputs.add(Integer.parseInt(mc_or.nextElement()[j].toString()));
 						}
-						temp_node2.addGate(temp_node2.circuit.genes.size()+1, "Or", temp_inputs);
-						Vector<Gene> temp_genes = temp_node2.circuit.genes;
+						if(temp_node2.addGate(temp_node2.circuit.genes.size()+1, "Or", temp_inputs)){
+                            Vector<Gene> temp_genes = temp_node2.circuit.genes;
 
-						if (temp_node2.circuit.getOutputLines().size() == sim.outputs[0].length) {
-							// doesn't need extra output
-							temp_level_2.add(temp_node2);
-						} else {
-							// does need extra output
-							// add one more NONE
-							for (int j = 0; j < temp_genes.size(); j++) {
-								Node temp_node3 = new Node(copyCircuit(temp_node2.circuit));
-								Vector<Integer> temp_inputs2 = new Vector<Integer>();
-								temp_inputs2.add(temp_genes.get(j).outputNum);
-								temp_node3.addGate(temp_genes.size() + 1, "None", temp_inputs2);
+                            if (temp_node2.circuit.getOutputLines().size() == sim.outputs[0].length) {
+                                // doesn't need extra output
+                                temp_level_2.add(temp_node2);
+                            } else {
+                                // does need extra output
+                                // add one more NONE
+                                for (int j = 0; j < temp_genes.size(); j++) {
+                                    Node temp_node3 = new Node(copyCircuit(temp_node2.circuit));
+                                    Vector<Integer> temp_inputs2 = new Vector<Integer>();
+                                    temp_inputs2.add(temp_genes.get(j).outputNum);
+                                    temp_node3.addGate(temp_genes.size() + 1, "None", temp_inputs2);
 //								temp_node3.circuit.Print();
-								temp_level_2.add(temp_node3);
-							}
-						}
+                                    temp_level_2.add(temp_node3);
+                                }
+                            }
+                        }
 					}
 				}
 				all_nodes.add(temp_level_2);
