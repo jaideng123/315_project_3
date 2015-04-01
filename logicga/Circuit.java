@@ -65,7 +65,8 @@ public class Circuit implements Comparable<Circuit> {
     		int index = randInt(0,genes.size()-1) ;
 			if(genes.elementAt(index).type == "Not")
 				numNots--;
-    		genes.get(index).mutate();
+			if(genes.elementAt(index).type != "None")//dont touch none gates
+    			genes.get(index).mutate();
 			if(genes.elementAt(index).type == "Not")
 				numNots++;
 			if(genes.elementAt(index).type == "Or" || genes.elementAt(index).type == "And"){
