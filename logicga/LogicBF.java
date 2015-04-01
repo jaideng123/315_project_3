@@ -279,7 +279,7 @@ public class LogicBF {
 			Vector<Node> temp_level_2 = new Vector<Node>();
 			// number of outputs from the circuit and truth table are equal
 			if (diff == 0) {
-				// add NOT Gateas
+				// add NOT Gates
 				for (int i = 0; i < temp_level_1.size(); i++) {
 					Circuit original_circuit = copyCircuit(temp_level_1.get(i).circuit);
 					Node original_node = new Node(original_circuit);
@@ -367,12 +367,6 @@ public class LogicBF {
 					for (int i = 0; i < temp_level_1.size(); i++) {
 						Circuit original_circuit = copyCircuit(temp_level_1.get(i).circuit);
 						Vector<Integer> original_output = original_circuit.getOutputLines();
-
-						// add AND/OR gates
-						Vector<Object> objects = new Vector<Object>();
-						for (int j = 0; j < original_output.size(); j ++) {
-							objects.add(original_output.get(j));
-						}
 
 						for (int j = 0; j < original_output.size() - 1; j ++) {
 							for (int k = j + 1; k < original_output.size(); k ++) {
