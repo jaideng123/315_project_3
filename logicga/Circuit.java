@@ -68,6 +68,11 @@ public class Circuit implements Comparable<Circuit> {
     		genes.get(index).mutate();
 			if(genes.elementAt(index).type == "Not")
 				numNots++;
+			if(genes.elementAt(index).type == "Or" || genes.elementAt(index).type == "And"){
+				if(genes.elementAt(index).inputs.size() < 2){
+					genes.elementAt(index).inputs.add(LogicGA.randInt(1,index+1));
+				}
+			}
     		break;
     	}
     	    		
@@ -82,7 +87,7 @@ public class Circuit implements Comparable<Circuit> {
         //cache result if recalculation isnt needed
         if(!simulated) {
             testCircuit(s);
-            fitness = 1000000 * (s.outputs[0].length*s.outputs.length-numGoalsReached) + 10000 * (numNots) + 10 * (genes.size() - numNots);
+            fitness = 1000000 * (s.outputs[0].length*s.outputs.length-numGoalsReached) + 10000 * (calculateNots()) + 10 * (genes.size() - numNots);
         }
         return fitness;
     }
@@ -155,6 +160,15 @@ public class Circuit implements Comparable<Circuit> {
         }
         return false;
     }
+	public int calculateNots(){
+		int nots = 0;
+		for(Gene g : genes){
+			if(g.type == "Not")
+				nots++;
+		}
+		numNots = nots;
+		return nots;
+	}
     
     public void removeLastGate(){
     	genes.removeElementAt(genes.size()-1);

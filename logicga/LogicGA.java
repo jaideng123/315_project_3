@@ -321,7 +321,7 @@ public class LogicGA {
                 Gene g = randomGate(c);
                 if(g.type == "Not")
                     c.numNots++;
-                c.genes.add(randomGate(c));
+                c.genes.add(g);
             }
             c.calculateFitness(s);
             initial.add(c);
