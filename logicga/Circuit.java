@@ -30,37 +30,48 @@ public class Circuit implements Comparable<Circuit> {
     }
      //Mutates circuit by either adding a gate or mutating a gene
     public void mutate(){
-    	Random r1 = new Random();
-    	Random r2 = new Random();
-    	int mutation = r1.nextInt(4)+1;
+    	
+    	int mutation = randInt(1,4);
     	int output;
     	Vector<Integer> newInputs = new Vector<Integer>();
     	switch (mutation){
-    	case 1:{
-    		 output = r1.nextInt(genes.size())+1;
-    		 
-//    		 genes.add(new Gene(output, "AND", ))
-//    	}
-//    	case 2:{
-//    		addGate(output, "OR", );
-    	}
+    	//add AND gate
+		case 1:{
+		 	output = genes.size()+1;
+			newInputs.addElement(randInt(0,genes.size()-1));
+			newInputs.addElement(randInt(0,genes.size()-1));
+			genes.add(new Gene(output, "AND", newInputs));
+			break;
+		}
+		//add OR gate
+		case 2:{
+			output = genes.size()+1;
+			newInputs.addElement(randInt(0,genes.size()-1));
+			newInputs.addElement(randInt(0,genes.size()-1));
+			genes.add(new Gene(output, "OR", newInputs));
+			break;
+		}
+		//add NOT gate
     	case 3:{
-    		output = r1.nextInt(genes.size())+1;
-    		newInputs.addElement(r2.nextInt(genes.size())+1);
-    		addGate(output, "NOT", newInputs );
+    		output = genes.size()+1;
+    		newInputs.addElement(randInt(0,genes.size()-1));
+    		genes.add(new Gene(output, "NOT", newInputs) );
+    		break;
     		
     	}
     	//change a gene
     	case 4:{
-    		int index = r1.nextInt(genes.size()) +1;
+    		int index = randInt(0,genes.size()-1) ;
     		genes.get(index).mutate();
+    		break;
     	}
     	    		
     	
     	default:
     		System.out.println("Could not mutate...");
+    		break;
     	}
-        simulated = false;
+//        simulated = false;
     }
     public int calculateFitness(Simulator s){
         //cache result if recalculation isnt needed
@@ -211,7 +222,18 @@ public class Circuit implements Comparable<Circuit> {
 		return 0;
 	}
 
-   
+    public  int randInt(int min, int max) {
+
+        // NOTE: Usually this should be a field rather than a method
+        // variable so that it is not re-seeded every call.
+        Random rand = new Random();
+
+        // nextInt is normally exclusive of the top value,
+        // so add 1 to make it inclusive
+        int randomNum = rand.nextInt((max - min) + 1) + min;
+
+        return randomNum;
+    }
     
     public void testCircuit(Simulator s){
         numGoalsReached = s.simulate(this);
