@@ -229,12 +229,12 @@ public class LogicGA {
         double percent = .99;
         int cutoff = (int) (POP_SIZE * percent);
         int last_result = 0;
-        int current_result = 0;
+        int current_result;
         int numRuns = 0;
         while (!solutionFound){
             p = select(p,cutoff);
             //Repopulate ( ͡° ͜ʖ ͡°)
-            while(p.getSize()  < POP_SIZE+10){
+            while(p.getSize()  < POP_SIZE){
                 int mama = randInt(0,p.getSize()-1);
                 int papa = randInt(0,p.getSize()-1);
                 Circuit c1 = (Circuit)p.population.toArray()[mama];
@@ -244,7 +244,6 @@ public class LogicGA {
                 offspring[1].calculateFitness(sim);
                 p.add(offspring[0]);
                 p.add(offspring[1]);
-                break;
             }
             //Mutate a random number of times
             int numMutations = randInt(0,POP_SIZE);
@@ -322,23 +321,28 @@ public class LogicGA {
         Population initial = new Population();
         for (int j = 0; j < size; j++) {
             //set up base for circuit
-            Circuit c = new Circuit();
-            for (int i = 1; i < inputs+1; i++) {
-                Vector<Integer> in = new Vector<Integer>();
-                in.addElement(i);
-                c.genes.add(new Gene(i, "None", in));
-            }
-            int r = randInt(1,inputs*5);
-            for (int i = 0; i < r; i++) {
-                Gene g = randomGate(c);
-                if(g.type == "Not")
-                    c.numNots++;
-                c.genes.add(g);
-            }
-            c.calculateFitness(s);
+            Circuit c = randomCircuit(inputs,s);
             initial.add(c);
         }
         return initial;
+    }
+    public static Circuit randomCircuit(int inputs,Simulator s){
+        //set up base for circuit
+        Circuit c = new Circuit();
+        for (int i = 1; i < inputs+1; i++) {
+            Vector<Integer> in = new Vector<Integer>();
+            in.addElement(i);
+            c.genes.add(new Gene(i, "None", in));
+        }
+        int r = randInt(1,inputs*5);
+        for (int i = 0; i < r; i++) {
+            Gene g = randomGate(c);
+            if(g.type == "Not")
+                c.numNots++;
+            c.genes.add(g);
+        }
+        c.calculateFitness(s);
+        return c;
     }
     public static Gene randomGate(Circuit c){
         int r = randInt(1,10);
