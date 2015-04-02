@@ -235,15 +235,23 @@ public class LogicGA {
             p = select(p,cutoff);
             //Repopulate ( ͡° ͜ʖ ͡°)
             while(p.getSize()  < POP_SIZE){
-                int mama = randInt(0,p.getSize()-1);
-                int papa = randInt(0,p.getSize()-1);
-                Circuit c1 = (Circuit)p.population.toArray()[mama];
-                Circuit c2 = (Circuit)p.population.toArray()[papa];
-                Circuit offspring[] = reproduce(c1,c2);
-                offspring[0].calculateFitness(sim);
-                offspring[1].calculateFitness(sim);
-                p.add(offspring[0]);
-                p.add(offspring[1]);
+                int r = randInt(1,2);
+                //reproduce from existing circuits
+                if(r == 1) {
+                    int mama = randInt(0, p.getSize() - 1);
+                    int papa = randInt(0, p.getSize() - 1);
+                    Circuit c1 = (Circuit) p.population.toArray()[mama];
+                    Circuit c2 = (Circuit) p.population.toArray()[papa];
+                    Circuit offspring[] = reproduce(c1, c2);
+                    offspring[0].calculateFitness(sim);
+                    offspring[1].calculateFitness(sim);
+                    p.add(offspring[0]);
+                    p.add(offspring[1]);
+                }
+                //Introduce new random circuit
+                else if(r == 2) {
+                    p.add(randomCircuit(sim.inputs[0].length,sim));
+                }
             }
             //Mutate a random number of times
             int numMutations = randInt(0,POP_SIZE);
