@@ -1,7 +1,7 @@
 
 package logicga;
 
-import java.io.*;
+import java.io.IOException;
 import java.security.PublicKey;
 import java.util.Arrays;
 import java.util.Random;
@@ -14,7 +14,7 @@ import java.lang.Math;
  * @author Eric C C
  */
 public class LogicGA {
-    static int POP_SIZE = 10;
+    static int POP_SIZE = 1000;
     /**
      * @param args the command line arguments
      */
@@ -224,16 +224,10 @@ public class LogicGA {
                 sim = new Simulator(custom_inputs, custom_outputs);
                 break;
         }
-
-        writeRandomFiles(POP_SIZE);
-
-        //Actual GA algorithm begins
         Population p = initialPopulation(sim.inputs[0].length,POP_SIZE,sim);
         boolean solutionFound = false;
         int cutoff = (int) (POP_SIZE * 0.99);
-        int iterationCounter =0;
         while (!solutionFound){
-            //Select the fittest
             p = select(p,cutoff);
             //Repopulate ( ͡° ͜ʖ ͡°)
             while(p.getSize()  < POP_SIZE){
@@ -243,7 +237,6 @@ public class LogicGA {
                 p.add(offspring[0]);
                 p.add(offspring[1]);
             }
-            //Mutate
             int numMutations = randInt(0,POP_SIZE);
             for (int i = 0; i <numMutations; i++) {
                 int target = randInt(0,p.getSize()-1);
@@ -252,15 +245,9 @@ public class LogicGA {
                 c.mutate();
                 p.add(c);
             }
-            //Check for Solution
             if(p.peekTopCircuit().numGoalsReached == sim.outputs.length * sim.outputs[0].length &&
                     p.peekTopCircuit().numNots <= 2)
                 solutionFound = true;
-            if(iterationCounter%100 == 0){
-                writeMetadata(iterationCounter, p);
-            }
-
-            iterationCounter++;
         }
     }
     //returns 2 offspring
@@ -282,8 +269,7 @@ public class LogicGA {
         }
         return children;
     }
-    //Function selects the top percentage of a population to pass to the next round
-    public static Population select(Population oldPop,int cutoff){
+     public static Population select(Population oldPop,int cutoff){
     	Population newPop = new Population();
     	int portion = cutoff;
     	System.out.println(portion);
@@ -344,64 +330,6 @@ public class LogicGA {
             g.inputs.add(randInt(1,c.genes.size()));
         }
         return g;
-    }
-
-    public static void writeMetadata(Integer iteration, Population pop){
-//        BufferedWriter writer = null;
-//        try {
-//            //create a temporary file
-//            String fileName = "Metadata.txt";
-//            File logFile = new File(fileName);
-//
-//            // This will output the full path where the file will be written to...
-//            System.out.println(logFile.getCanonicalPath());
-//
-//            writer = new BufferedWriter(new FileWriter(logFile));
-//
-//            writer.write(iteration.toString()+'\n');
-//            writer.write(String.valueOf(pop.peekTopCircuit().fitness)+'\n');
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            try {
-//                // Close the writer regardless of what happens...
-//                writer.close();
-//            } catch (Exception e) {
-//            }
-//        }
-        File file = new File("Metadata.txt");
-        try{
-            if(file.exists()==false){
-                System.out.println("New Metadata file created");
-                file.createNewFile();
-            }
-            PrintWriter writer = new PrintWriter(new FileWriter(file,true));
-
-            writer.append(iteration.toString() + '\n');
-            writer.append(String.valueOf(pop.peekTopCircuit().fitness) + '\n');
-
-            writer.close();
-        }catch(IOException e){
-            System.out.println("Could not open file!");
-        }
-    }
-
-    public static void writeRandomFiles(int popSize){
-        for (int i = 0 ; i < popSize; i++){
-            Circuit buffer = new Circuit();
-            Vector<Integer> tempInsert = new Vector<Integer>();
-            tempInsert.add(1);
-            buffer.addGate(1 , "None", tempInsert);
-            buffer.addGene(randomGate(buffer));
-            buffer.addGene(randomGate(buffer));
-            buffer.addGene(randomGate(buffer));
-            buffer.addGene(randomGate(buffer));
-            buffer.addGene(randomGate(buffer));
-            buffer.addGene(randomGate(buffer));
-            buffer.addGene(randomGate(buffer));
-            buffer.writeToFile(i);
-        }
     }
 
     //public

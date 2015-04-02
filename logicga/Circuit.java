@@ -40,7 +40,7 @@ public class Circuit implements Comparable<Circuit> {
 		 	output = genes.size()+1;
 			newInputs.addElement(randInt(0,genes.size()-1));
 			newInputs.addElement(randInt(0,genes.size()-1));
-			genes.add(new Gene(output, "AND", newInputs));
+			genes.add(new Gene(output, "And", newInputs));
 			break;
 		}
 		//add OR gate
@@ -48,21 +48,32 @@ public class Circuit implements Comparable<Circuit> {
 			output = genes.size()+1;
 			newInputs.addElement(randInt(0,genes.size()-1));
 			newInputs.addElement(randInt(0,genes.size()-1));
-			genes.add(new Gene(output, "OR", newInputs));
+			genes.add(new Gene(output, "Or", newInputs));
 			break;
 		}
 		//add NOT gate
     	case 3:{
     		output = genes.size()+1;
     		newInputs.addElement(randInt(0,genes.size()-1));
-    		genes.add(new Gene(output, "NOT", newInputs) );
+    		genes.add(new Gene(output, "Not", newInputs));
+			numNots++;
     		break;
     		
     	}
     	//change a gene
     	case 4:{
     		int index = randInt(0,genes.size()-1) ;
-    		genes.get(index).mutate();
+			if(genes.elementAt(index).type == "Not")
+				numNots--;
+			if(genes.elementAt(index).type != "None")//dont touch none gates
+    			genes.get(index).mutate();
+			if(genes.elementAt(index).type == "Not")
+				numNots++;
+			if(genes.elementAt(index).type == "Or" || genes.elementAt(index).type == "And"){
+				if(genes.elementAt(index).inputs.size() < 2){
+					genes.elementAt(index).inputs.add(LogicGA.randInt(1,index+1));
+				}
+			}
     		break;
     	}
     	    		
@@ -71,13 +82,13 @@ public class Circuit implements Comparable<Circuit> {
     		System.out.println("Could not mutate...");
     		break;
     	}
-//        simulated = false;
+        simulated = false;
     }
     public int calculateFitness(Simulator s){
         //cache result if recalculation isnt needed
         if(!simulated) {
             testCircuit(s);
-            fitness = 1000000 * (numGoalsReached) + 10000 * (numNots) + 10 * (genes.size() - numNots);
+            fitness = 1000000 * (s.outputs[0].length*s.outputs.length-numGoalsReached) + 10000 * (calculateNots()) + 10 * (genes.size() - numNots);
         }
         return fitness;
     }
@@ -180,6 +191,15 @@ public class Circuit implements Comparable<Circuit> {
         }
         return false;
     }
+	public int calculateNots(){
+		int nots = 0;
+		for(Gene g : genes){
+			if(g.type == "Not")
+				nots++;
+		}
+		numNots = nots;
+		return nots;
+	}
     
     public void removeLastGate(){
     	genes.removeElementAt(genes.size()-1);
@@ -243,6 +263,7 @@ public class Circuit implements Comparable<Circuit> {
 		int EQUAL = 0;
 		int GREATER = 1;
 		
+		if(fitness < a.fitness)
 		if(fitness < a.fitness)
 			return LESS;
 		if(fitness == a.fitness)
