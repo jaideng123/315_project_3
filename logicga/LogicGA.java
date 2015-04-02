@@ -248,7 +248,9 @@ public class LogicGA {
                     Circuit c1 = (Circuit) p.population.toArray()[mama];
                     Circuit c2 = (Circuit) p.population.toArray()[papa];
                     Circuit offspring[] = reproduce(c1, c2);
+                    offspring[0].simulated = false;
                     offspring[0].calculateFitness(sim);
+                    offspring[1].simulated = false;
                     offspring[1].calculateFitness(sim);
                     p.add(offspring[0]);
                     p.add(offspring[1]);
@@ -256,6 +258,7 @@ public class LogicGA {
                 //Introduce new random circuit
                 else if(r == 2) {
                     Circuit c = randomCircuit(sim.inputs[0].length,sim);
+                    c.simulated = false;
                     c.calculateFitness(sim);
                     p.add(c);
                 }
@@ -281,7 +284,7 @@ public class LogicGA {
                 System.out.println(current_result);
             }
             //check if we've found the correct circuit
-            if(p.peekTopCircuit().numGoalsReached == sim.outputs.length * sim.outputs[0].length &&
+            if(p.peekTopCircuit().testCircuit(sim) == sim.outputs.length * sim.outputs[0].length &&
                     p.peekTopCircuit().calculateNots() <= 2){
                 System.out.println("Circuit Found!");
                 p.peekTopCircuit().Print();

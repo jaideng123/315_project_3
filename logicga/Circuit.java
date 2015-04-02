@@ -283,9 +283,10 @@ public class Circuit implements Comparable<Circuit> {
         return randomNum;
     }
     
-    public void testCircuit(Simulator s){
+    public int testCircuit(Simulator s){
         numGoalsReached = s.simulate(this);
         simulated = true;
+        return numGoalsReached;
     }
 
 }
