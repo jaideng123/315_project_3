@@ -255,7 +255,9 @@ public class LogicGA {
                 }
                 //Introduce new random circuit
                 else if(r == 2) {
-                    p.add(randomCircuit(sim.inputs[0].length,sim));
+                    Circuit c = randomCircuit(sim.inputs[0].length,sim);
+                    c.calculateFitness(sim);
+                    p.add(c);
                 }
             }
             //Mutate a random number of times
