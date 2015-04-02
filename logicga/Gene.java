@@ -31,12 +31,14 @@ public class Gene {
     	switch (mutation){
     	//changes to AND
     	case 1:{
-    		type = "And";
+    		type = "AND";
+    		System.out.println("Changed "+ outputNum+ " to AND");
     		break;
     	}
     	//changes to OR
     	case 2:{
-    		type = "Or";
+    		type = "OR";
+    		System.out.println("Changed "+ outputNum+ " to OR");
     		break;
     	}
     	//changes to NOT
@@ -46,14 +48,17 @@ public class Gene {
     		if(inputs.size()!=1){
     			in= randInt(0,1);
     		}
+    		System.out.println("In: "+in);
     		int temp = inputs.get(in); //randomly select input to change to
     		inputs.clear();
     		inputs.addElement(temp);//set inputs to selected value
     		
-    		type = "Not";
+    		type = "NOT";
+    		System.out.println("Changed "+ outputNum+ " to NOT");
     		break;
     	}
     	default:
+    		System.out.println("No Gene change...");
     		break;
     	}
    	
