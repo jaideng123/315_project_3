@@ -232,7 +232,12 @@ public class LogicGA {
         int current_result;
         int numRuns = 0;
         while (!solutionFound){
-            p = select(p,cutoff);
+            if(randInt(1,1000) == 1) {//Doomsday
+                System.out.println("\nThen I saw \"a new heaven and a new earth,\" for the first heaven and the first earth had passed away, and there was no longer any sea.");
+                p = select(p, (int) (POP_SIZE * .05));
+            }
+            else
+                p = select(p,cutoff);
             //Repopulate ( ͡° ͜ʖ ͡°)
             while(p.getSize()  < POP_SIZE){
                 int r = randInt(1,2);
