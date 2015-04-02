@@ -84,7 +84,7 @@ public class Circuit implements Comparable<Circuit> {
     public void getFromFile(int populationIndex)throws IOException{
         //Fix for generic case
         // path should be change.
-        String path = "./testcircuit/Circuit0.txt";
+        String path = "./testcircuit/Circuit"+populationIndex+".txt";
         FileReader fr = new FileReader(path);
         BufferedReader textReader = new BufferedReader(fr);
         
@@ -120,13 +120,43 @@ public class Circuit implements Comparable<Circuit> {
         textReader.close();
        
     }
+
+    public void writeToFile(int populationIndex){
+        BufferedWriter writer = null;
+        try {
+            //create a temporary file
+            String fileName = "Circuit"+populationIndex+".txt";
+            File logFile = new File(fileName);
+
+            // This will output the full path where the file will be written to...
+            System.out.println(logFile.getCanonicalPath());
+
+            writer = new BufferedWriter(new FileWriter(logFile));
+
+            for(Gene gene : genes){
+                writer.write(gene.getString()+'\n');
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                // Close the writer regardless of what happens...
+                writer.close();
+            } catch (Exception e) {
+            }
+        }
+
+    }
     
     public void Print(){
         for(int i =0 ; i < genes.size() ;i++ ){
             genes.elementAt(i).Print();
         }
     }
-
+    public void addGene(Gene gene){
+        genes.add(gene);
+    }
     /**
      * I added functions below. Please revise them.
      * Sijine 

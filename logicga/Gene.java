@@ -83,4 +83,9 @@ public class Gene {
     public void Print(){
         System.out.println(outputNum + " " + type + " "+ inputs);
     }
+
+    public String getString(){
+        String geneLine = outputNum + " " + type + " "+ inputs;
+        return geneLine;
+    }
 }
