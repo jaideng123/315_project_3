@@ -233,7 +233,7 @@ public class LogicGA {
         int numRuns = 0;
         while (!solutionFound){
             if(randInt(1,1000) == 1 && numRuns > 1000) {//Doomsday
-                System.out.println("Country road take me home!");
+                System.out.println("\nCountry road take me home!");
                 p = select(p, (int) (POP_SIZE * .05));
             }
             else
@@ -319,8 +319,12 @@ public class LogicGA {
     public static Population select(Population oldPop,int cutoff){
         Population newPop = new Population();
         int portion = cutoff;
-        for(int i = 0;i<portion;i++){
+        for(int i = 0;i<portion/2;i++){
             newPop.add(oldPop.getTopCircuit());
+        }
+        for(int i = 0;i<portion/2;i++){
+            int target = randInt(1,oldPop.getSize()-1);
+            newPop.add((Circuit)oldPop.population.toArray()[target]);
         }
         oldPop.population.clear();
 
