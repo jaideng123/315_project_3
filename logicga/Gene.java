@@ -22,49 +22,44 @@ public class Gene {
         outputNum = output;
         type = gateType;
         inputs = input;
-        
+
     }
-      //changes the gate
+    //changes the gate
     public void mutate(){
-    	Random r1 = new Random();
-    	int mutation = r1.nextInt(3)+1;
-    	switch (mutation){
-    	//changes to AND
-    	case 1:{
-    		type = "AND";
-    		System.out.println("Changed "+ outputNum+ " to AND");
-    		break;
-    	}
-    	//changes to OR
-    	case 2:{
-    		type = "OR";
-    		System.out.println("Changed "+ outputNum+ " to OR");
-    		break;
-    	}
-    	//changes to NOT
-    	case 3:{
-    		
-    		int in = 0;
-    		if(inputs.size()!=1){
-    			in= randInt(0,1);
-    		}
-    		System.out.println("In: "+in);
-    		int temp = inputs.get(in); //randomly select input to change to
-    		inputs.clear();
-    		inputs.addElement(temp);//set inputs to selected value
-    		
-    		type = "NOT";
-    		System.out.println("Changed "+ outputNum+ " to NOT");
-    		break;
-    	}
-    	default:
-    		System.out.println("No Gene change...");
-    		break;
-    	}
-   	
+        Random r1 = new Random();
+        int mutation = r1.nextInt(3)+1;
+        switch (mutation){
+            //changes to AND
+            case 1:{
+                type = "And";
+                break;
+            }
+            //changes to OR
+            case 2:{
+                type = "Or";
+                break;
+            }
+            //changes to NOT
+            case 3:{
+
+                int in = 0;
+                if(inputs.size()!=1){
+                    in= randInt(0,1);
+                }
+                int temp = inputs.get(in); //randomly select input to change to
+                inputs.clear();
+                inputs.addElement(temp);//set inputs to selected value
+
+                type = "Not";
+                break;
+            }
+            default:
+                break;
+        }
+
     }
-    
- 
+
+
     public  int randInt(int min, int max) {
 
         // NOTE: Usually this should be a field rather than a method
@@ -77,9 +72,9 @@ public class Gene {
 
         return randomNum;
     }
-    
- 
-    
+
+
+
     public void Print(){
         System.out.println(outputNum + " " + type + " "+ inputs);
     }

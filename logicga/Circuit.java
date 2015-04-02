@@ -29,55 +29,64 @@ public class Circuit implements Comparable<Circuit> {
         genes = new Vector<Gene>();
     }
      //Mutates circuit by either adding a gate or mutating a gene
-    public void mutate(){
-    	
-    	int mutation = randInt(1,4);
-    	int output;
-    	Vector<Integer> newInputs = new Vector<Integer>();
-    	switch (mutation){
-    	//add AND gate
-		case 1:{
-		 	output = genes.size()+1;
-			newInputs.addElement(randInt(0,genes.size()-1));
-			newInputs.addElement(randInt(0,genes.size()-1));
-			genes.add(new Gene(output, "AND", newInputs));
-			break;
-		}
-		//add OR gate
-		case 2:{
-			output = genes.size()+1;
-			newInputs.addElement(randInt(0,genes.size()-1));
-			newInputs.addElement(randInt(0,genes.size()-1));
-			genes.add(new Gene(output, "OR", newInputs));
-			break;
-		}
-		//add NOT gate
-    	case 3:{
-    		output = genes.size()+1;
-    		newInputs.addElement(randInt(0,genes.size()-1));
-    		genes.add(new Gene(output, "NOT", newInputs) );
-    		break;
-    		
-    	}
-    	//change a gene
-    	case 4:{
-    		int index = randInt(0,genes.size()-1) ;
-    		genes.get(index).mutate();
-    		break;
-    	}
-    	    		
-    	
-    	default:
-    		System.out.println("Could not mutate...");
-    		break;
-    	}
-//        simulated = false;
-    }
+     public void mutate() {
+
+         int mutation = randInt(1, 4);
+         int output;
+         Vector<Integer> newInputs = new Vector<Integer>();
+         switch (mutation) {
+             //add AND gate
+             case 1: {
+                 output = genes.size() + 1;
+                 newInputs.addElement(randInt(0, genes.size() - 1));
+                 newInputs.addElement(randInt(0, genes.size() - 1));
+                 genes.add(new Gene(output, "And", newInputs));
+                 break;
+             }
+             //add OR gate
+             case 2: {
+                 output = genes.size() + 1;
+                 newInputs.addElement(randInt(0, genes.size() - 1));
+                 newInputs.addElement(randInt(0, genes.size() - 1));
+                 genes.add(new Gene(output, "Or", newInputs));
+                 break;
+             }
+             //add NOT gate
+             case 3: {
+                 output = genes.size() + 1;
+                 newInputs.addElement(randInt(0, genes.size() - 1));
+                 genes.add(new Gene(output, "Not", newInputs));
+                 numNots++;
+                 break;
+
+             }
+             //change a gene
+             case 4: {
+                 int index = randInt(0, genes.size() - 1);
+                 if (genes.elementAt(index).type == "Not")
+                     numNots--;
+                 if (genes.elementAt(index).type != "None")//dont touch none gates
+                     genes.get(index).mutate();
+                 if (genes.elementAt(index).type == "Not")
+                     numNots++;
+                 if (genes.elementAt(index).type == "Or" || genes.elementAt(index).type == "And") {
+                     if (genes.elementAt(index).inputs.size() < 2) {
+                         genes.elementAt(index).inputs.add(LogicGA.randInt(1, index + 1));
+                     }
+                 }
+                 break;
+             }
+                 default:
+                     System.out.println("Could not mutate...");
+                     break;
+             }
+             simulated = false;
+     }
     public int calculateFitness(Simulator s){
         //cache result if recalculation isnt needed
         if(!simulated) {
             testCircuit(s);
-            fitness = 1000000 * (numGoalsReached) + 10000 * (numNots) + 10 * (genes.size() - numNots);
+            fitness = 1000000 * (s.outputs[0].length*s.outputs.length-numGoalsReached) + 10000 * (calculateNots()) + 10 * (genes.size() - numNots);
         }
         return fitness;
     }
@@ -129,7 +138,7 @@ public class Circuit implements Comparable<Circuit> {
             File logFile = new File(fileName);
 
             // This will output the full path where the file will be written to...
-            System.out.println(logFile.getCanonicalPath());
+            //System.out.println(logFile.getCanonicalPath());
 
             writer = new BufferedWriter(new FileWriter(logFile));
 
@@ -179,6 +188,15 @@ public class Circuit implements Comparable<Circuit> {
             }
         }
         return false;
+    }
+    public int calculateNots(){
+        int nots = 0;
+        for(Gene g : genes){
+            if(g.type == "Not")
+                nots++;
+        }
+        numNots = nots;
+        return nots;
     }
     
     public void removeLastGate(){
