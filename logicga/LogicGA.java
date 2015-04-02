@@ -261,7 +261,7 @@ public class LogicGA {
                 }
             }
             //Mutate a random number of times
-            int numMutations = randInt(0,POP_SIZE);
+            int numMutations = randInt(0,POP_SIZE)*(int)(1/percent)/20;
             for (int i = 0; i <numMutations; i++) {
                 int target = randInt(1,p.getSize()-1);
                 Circuit c = (Circuit)p.population.toArray()[target];
@@ -281,7 +281,7 @@ public class LogicGA {
             }
 
             if(p.peekTopCircuit().numGoalsReached == sim.outputs.length * sim.outputs[0].length &&
-                    p.peekTopCircuit().numNots <= 2){
+                    p.peekTopCircuit().calculateNots() <= 2){
                 System.out.println("Circuit Found!");
                 p.peekTopCircuit().Print();
                 solutionFound = true;
