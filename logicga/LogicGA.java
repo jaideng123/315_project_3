@@ -270,6 +270,7 @@ public class LogicGA {
                 c.calculateFitness(sim);
                 p.add(c);
             }
+            //recalculate cutoff and update i/o
             if(percent > 0.20)
                 percent -= 0.01;
             cutoff = (int) (POP_SIZE * percent);
@@ -279,7 +280,7 @@ public class LogicGA {
                 System.out.println("");
                 System.out.println(current_result);
             }
-
+            //check if we've found the correct circuit
             if(p.peekTopCircuit().numGoalsReached == sim.outputs.length * sim.outputs[0].length &&
                     p.peekTopCircuit().calculateNots() <= 2){
                 System.out.println("Circuit Found!");
