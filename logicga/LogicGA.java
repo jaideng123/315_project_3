@@ -232,8 +232,8 @@ public class LogicGA {
         int current_result;
         int numRuns = 0;
         while (!solutionFound){
-            if(randInt(1,1000) == 1) {//Doomsday
-                System.out.println("\nThen I saw \"a new heaven and a new earth,\" for the first heaven and the first earth had passed away, and there was no longer any sea.");
+            if(randInt(1,1000) == 1 && numRuns > 1000) {//Doomsday
+                System.out.println("Country road take me home!");
                 p = select(p, (int) (POP_SIZE * .05));
             }
             else
@@ -282,6 +282,8 @@ public class LogicGA {
                 last_result = current_result;
                 System.out.println("");
                 System.out.println(current_result);
+                //Add file write here!!!
+                numRuns = 0;
             }
             //check if we've found the correct circuit
             if(p.peekTopCircuit().testCircuit(sim) == sim.outputs.length * sim.outputs[0].length &&
