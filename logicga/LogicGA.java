@@ -283,6 +283,7 @@ public class LogicGA {
                 System.out.println("");
                 System.out.println(current_result);
                 //Add file write here!!!
+                writeMetadata(current_result);
                 numRuns = 0;
             }
             //check if we've found the correct circuit
@@ -389,40 +390,19 @@ public class LogicGA {
         }
         return g;
     }
-    public static void writeMetadata(Integer iteration, Population pop){
-//        BufferedWriter writer = null;
-//        try {
-//            //create a temporary file
-//            String fileName = "Metadata.txt";
-//            File logFile = new File(fileName);
-//
-//            // This will output the full path where the file will be written to...
-//            System.out.println(logFile.getCanonicalPath());
-//
-//            writer = new BufferedWriter(new FileWriter(logFile));
-//
-//            writer.write(iteration.toString()+'\n');
-//            writer.write(String.valueOf(pop.peekTopCircuit().fitness)+'\n');
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            try {
-//                // Close the writer regardless of what happens...
-//                writer.close();
-//            } catch (Exception e) {
-//            }
-//        }
+    public static void writeMetadata(int top){
+
         File file = new File("Metadata.txt");
         try{
             if(file.exists()==false){
                 System.out.println("New Metadata file created");
                 file.createNewFile();
             }
-            PrintWriter writer = new PrintWriter(file);
+            PrintWriter writer = new PrintWriter(new FileWriter(file,true));
 
-            writer.append(iteration.toString() + '\n');
-            writer.append(String.valueOf(pop.peekTopCircuit().fitness) + '\n');
+            Integer value =(Integer) top;
+            writer.append(value.toString() + '\n');
+
 
             writer.close();
         }catch(IOException e){
