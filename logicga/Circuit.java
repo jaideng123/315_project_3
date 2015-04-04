@@ -30,7 +30,7 @@ public class Circuit implements Comparable<Circuit> {
     }
      //Mutates circuit by either adding a gate or mutating a gene
      public void mutate() {
-
+    	 
          int mutation = randInt(1, 4);
          int output;
          Vector<Integer> newInputs = new Vector<Integer>();
@@ -62,11 +62,12 @@ public class Circuit implements Comparable<Circuit> {
              }
              //change a gene
              case 4: {
-                 int index = randInt(0, genes.size() - 1);
+            	 calculateNots();
+                 int index = randInt(3, genes.size() - 1);
                  if (genes.elementAt(index).type == "Not")
                      numNots--;
                  if (genes.elementAt(index).type != "None")//dont touch none gates
-                     genes.get(index).mutate();
+                     genes.get(index).mutate(numNots);//changed genes mutate
                  if (genes.elementAt(index).type == "Not")
                      numNots++;
                  if (genes.elementAt(index).type == "Or" || genes.elementAt(index).type == "And") {
@@ -76,17 +77,50 @@ public class Circuit implements Comparable<Circuit> {
                  }
                  break;
              }
+             //shuffle genes
+             case 5:{
+            	 int r1 = randInt(2,genes.size()-1);
+            	 int r2 = randInt(2,genes.size()-1);
+            	
+            	 Gene one = genes.get(r1);
+            	 Gene two = genes.get(r2);
+            	 genes.get(r1).inputs = two.inputs;
+            	 genes.get(r1).type = two.type;
+            	 genes.get(r2).inputs = one.inputs;
+            	 genes.get(r2).type = one.type;
+            	
+            	 break;
+             }
                  default:
                      System.out.println("Could not mutate...");
                      break;
              }
              simulated = false;
      }
-    public int calculateFitness(Simulator s){
+    public int calculateFitness(Simulator s, int choice){
         //cache result if recalculation isnt needed
         if(!simulated) {
-            testCircuit(s);
-            fitness = 1000000 * (s.outputs[0].length*s.outputs.length-numGoalsReached) + 10000 * (calculateNots()) + 10 * (genes.size() - numNots);
+        	if(choice == 2){
+        		
+        		int nots = calculateNots();
+        		
+        		
+        		if(numNots != 2)
+        			nots = numNots * 2;
+        		if(numNots == 1){
+        			nots = 3;
+        		}
+        		if(numNots == 0)
+        			nots = 1;
+        		testCircuit(s);
+        		
+        		
+        		fitness = 10000 * ((s.outputs[0].length*s.outputs.length) - numGoalsReached) + (100000 * nots)+ (1000/genes.size());
+        		
+        	}else{
+	            testCircuit(s);
+	            fitness = 1000000 * (s.outputs[0].length*s.outputs.length-numGoalsReached) + 10000 * (calculateNots()) + 10 * (genes.size() - numNots);
+        	}
         }
         return fitness;
     }
