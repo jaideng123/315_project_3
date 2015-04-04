@@ -25,36 +25,70 @@ public class Gene {
 
     }
     //changes the gate
-    public void mutate(){
-        Random r1 = new Random();
-        int mutation = r1.nextInt(3)+1;
-        switch (mutation){
-            //changes to AND
-            case 1:{
-                type = "And";
-                break;
-            }
-            //changes to OR
-            case 2:{
-                type = "Or";
-                break;
-            }
-            //changes to NOT
-            case 3:{
+    public void mutate(int numNots){
+    	int mutation = 0;
+    	int mutNot = 0;
+        if(numNots == 2){//If circuit has two Not gates, less likely of Not gate mutation
+        	mutNot = randInt(1,10);
+        	 if(mutNot==1){
+             	int in = 0;
+                 if(inputs.size()!=1){
+                     in= randInt(0,1);
+                 }
+                 int temp = inputs.get(in); //randomly select input to change to
+                 inputs.clear();
+                 inputs.addElement(temp);//set inputs to selected value
 
-                int in = 0;
-                if(inputs.size()!=1){
-                    in= randInt(0,1);
-                }
-                int temp = inputs.get(in); //randomly select input to change to
-                inputs.clear();
-                inputs.addElement(temp);//set inputs to selected value
+                 type = "Not";
+        	 }else{
+             	mutation = randInt(1,2);
+    	        switch (mutation){
+    	            //changes to AND
+    	            case 1:{
+    	                type = "And";
+    	                break;
+    	            }
+    	            //changes to OR
+    	            case 2:{
+    	                type = "Or";
+    	                break;
+    	            }
+    	            default:
+    	            	break;
+    	        }
+        	 }
+        }else{
+        	mutation = randInt(1,3);
+        
 
-                type = "Not";
-                break;
-            }
-            default:
-                break;
+	        switch (mutation){
+	            //changes to AND
+	            case 1:{
+	                type = "And";
+	                break;
+	            }
+	            //changes to OR
+	            case 2:{
+	                type = "Or";
+	                break;
+	            }
+	            //changes to NOT
+	            case 3:{
+	
+	                int in = 0;
+	                if(inputs.size()!=1){
+	                    in= randInt(0,1);
+	                }
+	                int temp = inputs.get(in); //randomly select input to change to
+	                inputs.clear();
+	                inputs.addElement(temp);//set inputs to selected value
+	
+	                type = "Not";
+	                break;
+	            }
+	            default:
+	                break;
+	        }
         }
 
     }
