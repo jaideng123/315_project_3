@@ -20,7 +20,7 @@ public class LogicGA {
      */
     public static void main(String[] args) {
         System.out.println("Breadth First Search START");
-
+        writeMetadata("-----New Test-------");
         // real full adder inputs
         boolean[][] fulladder_inputs = new boolean[8][3];
         fulladder_inputs[0][0] = false;
@@ -198,7 +198,7 @@ public class LogicGA {
         System.out.print("Choose one: ");
         Scanner in = new Scanner(System.in);
         int num = in.nextInt();
-
+        in.close();
         Simulator sim = null;
 
         switch(num) {
@@ -224,7 +224,7 @@ public class LogicGA {
                 sim = new Simulator(custom_inputs, custom_outputs);
                 break;
         }
-        Population p = initialPopulation(sim.inputs[0].length,POP_SIZE,sim);
+        Population p = initialPopulation(sim.inputs[0].length,POP_SIZE,sim,num);
         boolean solutionFound = false;
         double percent = .99;
         int cutoff = (int) (POP_SIZE * percent);
@@ -233,14 +233,15 @@ public class LogicGA {
         int numRuns = 0;
         while (!solutionFound){
             if(randInt(1,1000) == 1 && numRuns > 1000) {//Doomsday
-                System.out.println("\nCountry road take me home!");
-                p = select(p, (int) (POP_SIZE * .05));
+                System.out.println("\nApocalypse Now!");
+                p = select(p, (int) (POP_SIZE * .5));
+                numRuns = 0;
             }
             else
                 p = select(p,cutoff);
             //Repopulate ( ͡° ͜ʖ ͡°)
             while(p.getSize()  < POP_SIZE){
-                int r = randInt(1,2);
+                int r = randInt(1,5);
                 //reproduce from existing circuits
                 if(r == 1) {
                     int mama = randInt(0, p.getSize() - 1);
@@ -249,41 +250,57 @@ public class LogicGA {
                     Circuit c2 = (Circuit) p.population.toArray()[papa];
                     Circuit offspring[] = reproduce(c1, c2);
                     offspring[0].simulated = false;
-                    offspring[0].calculateFitness(sim);
+                    offspring[0].calculateFitness(sim,num);
                     offspring[1].simulated = false;
-                    offspring[1].calculateFitness(sim);
+                    offspring[1].calculateFitness(sim,num);
                     p.add(offspring[0]);
                     p.add(offspring[1]);
                 }
                 //Introduce new random circuit
                 else if(r == 2) {
-                    Circuit c = randomCircuit(sim.inputs[0].length,sim);
+                    Circuit c = randomCircuit(sim.inputs[0].length,sim,num);
                     c.simulated = false;
-                    c.calculateFitness(sim);
+                    c.calculateFitness(sim,num);
                     p.add(c);
+                }
+                //repopulate with top 10%
+                else{
+                	int mama = randInt(0, (int)(p.getSize()*.1));
+                    int papa = randInt(0, p.getSize() - 1);
+                    Circuit c1 = (Circuit) p.population.toArray()[mama];
+                    Circuit c2 = (Circuit) p.population.toArray()[papa];
+                    Circuit offspring[] = reproduce(c1, c2);
+                    offspring[0].simulated = false;
+                    offspring[0].calculateFitness(sim,num);
+                    offspring[1].simulated = false;
+                    offspring[1].calculateFitness(sim,num);
+                    p.add(offspring[0]);
+                    p.add(offspring[1]);
                 }
             }
             //Mutate a random number of times
-            int numMutations = randInt(0,POP_SIZE)*(int)(1/percent)/20;
+           // int numMutations = randInt(0,POP_SIZE)*(int)(1/percent)/20;
+            int numMutations = (int)(POP_SIZE*(percent/2));
             for (int i = 0; i <numMutations; i++) {
-                int target = randInt(1,p.getSize()-1);
+                int target = randInt(1,(int)((p.getSize()-1)*.20));
                 Circuit c = (Circuit)p.population.toArray()[target];
                 p.population.remove(c);
                 c.mutate();
-                c.calculateFitness(sim);
+                c.calculateFitness(sim,num);
                 p.add(c);
             }
             //recalculate cutoff and update i/o
-            if(percent > 0.20)
+            if(percent > 0.50)
                 percent -= 0.01;
             cutoff = (int) (POP_SIZE * percent);
-            current_result = p.peekTopCircuit().calculateFitness(sim);
+            current_result = p.peekTopCircuit().calculateFitness(sim,num);
             if(last_result != current_result){
                 last_result = current_result;
                 System.out.println("");
                 System.out.println(current_result);
+                //System.out.println("Size: " +p.peekTopCircuit().genes.size());
                 //Add file write here!!!
-                writeMetadata(current_result);
+                writeMetadata(Integer.toString(current_result));
                 numRuns = 0;
             }
             //check if we've found the correct circuit
@@ -324,7 +341,7 @@ public class LogicGA {
             newPop.add(oldPop.getTopCircuit());
         }
         for(int i = 0;i<portion/2;i++){
-            int target = randInt(1,oldPop.getSize()-1);
+            int target = randInt(1,oldPop.getSize()/2);
             newPop.add((Circuit)oldPop.population.toArray()[target]);
         }
         oldPop.population.clear();
@@ -343,16 +360,16 @@ public class LogicGA {
 
         return randomNum;
     }
-    public static Population initialPopulation(int inputs, int size, Simulator s){
+    public static Population initialPopulation(int inputs, int size, Simulator s, int num){
         Population initial = new Population();
         for (int j = 0; j < size; j++) {
             //set up base for circuit
-            Circuit c = randomCircuit(inputs,s);
+            Circuit c = randomCircuit(inputs,s,num);
             initial.add(c);
         }
         return initial;
     }
-    public static Circuit randomCircuit(int inputs,Simulator s){
+    public static Circuit randomCircuit(int inputs,Simulator s,int num){
         //set up base for circuit
         Circuit c = new Circuit();
         for (int i = 1; i < inputs+1; i++) {
@@ -367,7 +384,7 @@ public class LogicGA {
                 c.numNots++;
             c.genes.add(g);
         }
-        c.calculateFitness(s);
+        c.calculateFitness(s,num);
         return c;
     }
     public static Gene randomGate(Circuit c){
@@ -390,7 +407,7 @@ public class LogicGA {
         }
         return g;
     }
-    public static void writeMetadata(int top){
+    public static void writeMetadata(String top){
 
         File file = new File("Metadata.txt");
         try{
@@ -400,8 +417,8 @@ public class LogicGA {
             }
             PrintWriter writer = new PrintWriter(new FileWriter(file,true));
 
-            Integer value =(Integer) top;
-            writer.append(value.toString() + '\n');
+//            Integer value =(Integer) top;
+            writer.append(top + '\n');
 
 
             writer.close();
