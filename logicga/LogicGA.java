@@ -18,9 +18,10 @@ public class LogicGA {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public LogicGA(){}
+    public  void execute() {
         System.out.println("Breadth First Search START");
-        writeMetadata("-----New Test-------");
+        //writeMetadata("-----New Test-------");
         // real full adder inputs
         boolean[][] fulladder_inputs = new boolean[8][3];
         fulladder_inputs[0][0] = false;
@@ -225,23 +226,44 @@ public class LogicGA {
                 break;
         }
         Population p = initialPopulation(sim.inputs[0].length,POP_SIZE,sim,num);
+        p.setBounds();
         boolean solutionFound = false;
         double percent = .99;
         int cutoff = (int) (POP_SIZE * percent);
         int last_result = 0;
         int current_result;
+        int stag=0;
         int numRuns = 0;
         while (!solutionFound){
-            if(randInt(1,10000) == 1 && numRuns > 1000) {//Doomsday
+//        	if(stag>=10000){
+//        		POP_SIZE+=50;
+//        		System.out.println("\nIncreasing POP SIZE");
+//        		stag =0;
+//        	}
+            if(randInt(1,1000) == 1 && numRuns > 1000) {//Doomsday
                 System.out.println("\nApocalypse Now!");
-                p = select(p, (int) (POP_SIZE * .5));
+                p = select(p, (int) (POP_SIZE * .2));
+                //p.setBounds();
+                percent = .99;
                 numRuns = 0;
-            }
-            else
+                
+//            }if(randInt(1,1000) == 2 && numRuns > 1000&& stag>=1000) {//megaMutate
+//            	System.out.println("\nMEGA MUTATE");
+//            	 for (int i = 0; i <p.getSize(); i++) {
+//                     int target = randInt(1,p.getSize()-1);
+//                     Circuit c = (Circuit)p.population.toArray()[target];
+//                     p.population.remove(c);
+//                     c.mutate();
+//                     c.calculateFitness(sim,num);
+//                     p.add(c);
+//                 }
+//            	 numRuns=0;
+//            	 stag=0;
+            }else
                 p = select(p,cutoff);
             //Repopulate ( ͡° ͜ʖ ͡°)
             while(p.getSize()  < POP_SIZE){
-                int r = randInt(1,5);
+                int r = randInt(1,4);
                 //reproduce from existing circuits
                 if(r == 1) {
                     int mama = randInt(0, p.getSize() - 1);
@@ -255,6 +277,7 @@ public class LogicGA {
                     offspring[1].calculateFitness(sim,num);
                     p.add(offspring[0]);
                     p.add(offspring[1]);
+                    //p.setBounds();
                 }
                 //Introduce new random circuit
                 else if(r == 2) {
@@ -262,11 +285,26 @@ public class LogicGA {
                     c.simulated = false;
                     c.calculateFitness(sim,num);
                     p.add(c);
+                   // p.setBounds();
                 }
                 //repopulate with top 10%
-                else{
-                	int mama = randInt(0, (int)(p.getSize()*.1));
+                else if(r==3){
+                	int mama = randInt(0, (int)(p.getSize()*.2));
                     int papa = randInt(0, p.getSize() - 1);
+                    Circuit c1 = (Circuit) p.population.toArray()[mama];
+                    Circuit c2 = (Circuit) p.population.toArray()[papa];
+                    Circuit offspring[] = reproduce(c1, c2);
+                    offspring[0].simulated = false;
+                    offspring[0].calculateFitness(sim,num);
+                    offspring[1].simulated = false;
+                    offspring[1].calculateFitness(sim,num);
+                    p.add(offspring[0]);
+                    p.add(offspring[1]);
+                    //p.setBounds();
+                }
+                else if(r==4){
+                	int mama = 0;
+                    int papa = p.getSize()-1;
                     Circuit c1 = (Circuit) p.population.toArray()[mama];
                     Circuit c2 = (Circuit) p.population.toArray()[papa];
                     Circuit offspring[] = reproduce(c1, c2);
@@ -280,28 +318,35 @@ public class LogicGA {
             }
             //Mutate a random number of times
            // int numMutations = randInt(0,POP_SIZE)*(int)(1/percent)/20;
-            int numMutations = (int)(POP_SIZE*(percent/2));
+            int numMutations = (int)(POP_SIZE*(.2));
             for (int i = 0; i <numMutations; i++) {
-                int target = randInt(1,(int)((p.getSize()-1)*.20));
+                int target = randInt(1,(int)((p.getSize()-1)*.5));
                 Circuit c = (Circuit)p.population.toArray()[target];
                 p.population.remove(c);
                 c.mutate();
                 c.calculateFitness(sim,num);
                 p.add(c);
             }
+            //p.setBounds();
             //recalculate cutoff and update i/o
             if(percent > 0.50)
                 percent -= 0.01;
             cutoff = (int) (POP_SIZE * percent);
             current_result = p.peekTopCircuit().calculateFitness(sim,num);
+            
             if(last_result != current_result){
                 last_result = current_result;
                 System.out.println("");
                 System.out.println(current_result);
+                //System.out.println((sim.outputs[0].length*sim.outputs.length) - p.peekTopCircuit().numGoalsReached);
                 //System.out.println("Size: " +p.peekTopCircuit().genes.size());
                 //Add file write here!!!
                 writeMetadata(Integer.toString(current_result));
                 numRuns = 0;
+                stag = 0;
+            }
+            if(last_result >= current_result){
+            	stag++;
             }
             //check if we've found the correct circuit
             if(p.peekTopCircuit().testCircuit(sim) == sim.outputs.length * sim.outputs[0].length &&
