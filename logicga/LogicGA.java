@@ -198,6 +198,7 @@ public class LogicGA {
         System.out.print("Choose one: ");
         Scanner in = new Scanner(System.in);
         int num = in.nextInt();
+        GraphFrame graph = new GraphFrame("Graph");
 
         Simulator sim = null;
 
@@ -231,6 +232,7 @@ public class LogicGA {
         int last_result = 0;
         int current_result;
         int numRuns = 0;
+        int totalRuns = 0;
         while (!solutionFound){
             if(randInt(1,1000) == 1 && numRuns > 1000) {//Doomsday
                 System.out.println("\nCountry road take me home!");
@@ -282,8 +284,7 @@ public class LogicGA {
                 last_result = current_result;
                 System.out.println("");
                 System.out.println(current_result);
-                //Add file write here!!!
-                writeMetadata(current_result);
+                graph.drawGraph(totalRuns,current_result);
                 numRuns = 0;
             }
             //check if we've found the correct circuit
@@ -293,9 +294,12 @@ public class LogicGA {
                 p.peekTopCircuit().Print();
                 solutionFound = true;
             }
-            if(numRuns % 50 == 0)
+            if(numRuns % 50 == 0) {
                 System.out.print("*");
+                graph.drawGraph(totalRuns,current_result);
+            }
             numRuns++;
+            totalRuns++;
         }
     }
     //returns 2 offspring
