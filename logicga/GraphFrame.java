@@ -34,7 +34,7 @@ public class GraphFrame extends JFrame {
 	XYSeries series = new XYSeries("XYGraph");
 	XYSeriesCollection dataset = new XYSeriesCollection();
 	JFreeChart chart = ChartFactory.createXYLineChart(
-			"XY Chart", // Title
+			"Genetic Algorithm", // Title
 			"Total Generations", // x-axis Label
 			"Best Fitness", // y-axis Label
 			dataset, // Dataset
@@ -92,14 +92,14 @@ public class GraphFrame extends JFrame {
 				dataset = new XYSeriesCollection();
 				dataset.addSeries(series);
 				chart = ChartFactory.createXYLineChart(
-					"XY Chart", // Title
-					"Total Generations", // x-axis Label
-					"Best Fitness", // y-axis Label
-					dataset, // Dataset
-					PlotOrientation.VERTICAL, // Plot Orientation
-					true, // Show Legend
-					true, // Use tooltips
-					false // Configure chart to generate URLs?
+						"Genetic Algorithm", // Title
+						"Total Generations", // x-axis Label
+						"Best Fitness", // y-axis Label
+						dataset, // Dataset
+						PlotOrientation.VERTICAL, // Plot Orientation
+						true, // Show Legend
+						true, // Use tooltips
+						false // Configure chart to generate URLs?
 				);
 				cp = new ChartPanel(chart);
 				contentPane.add(cp, BorderLayout.CENTER);
