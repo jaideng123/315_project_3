@@ -17,10 +17,11 @@ public class DrawPanel extends JPanel {
 
 	public DrawPanel(){
 		setLayout(new BorderLayout());
-		setSize(screenSize().width,screenSize().height);
-		xaxis = getSize().width;
-		yoffset = (getSize().height*7)/8;
-		
+//		setSize(screenSize().width,screenSize().height);
+//		xaxis = getSize().width;
+//		yoffset = (getSize().height*7)/8;
+		xaxis = 700;
+		yoffset = 700;
 	}
 	
 	public int xOrigin(){
@@ -29,7 +30,7 @@ public class DrawPanel extends JPanel {
 	}
 	public int yOrigin(){
 		//System.out.println((getSize().height*7)/8);
-		return (getSize().height*6)/7;
+		return yoffset;
 	}
 	public Dimension screenSize(){
 		
@@ -39,7 +40,7 @@ public class DrawPanel extends JPanel {
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		g.drawLine(0, yoffset, xaxis, yoffset);
-		System.out.println(yoffset);
+		//System.out.println(yoffset);
 		g.drawLine(0, yoffset ,0,0);
 	}
 	public String plot(int gen, int fitness){
