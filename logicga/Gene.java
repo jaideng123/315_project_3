@@ -110,7 +110,11 @@ public class Gene {
 
 
     public void Print(){
-        System.out.println(outputNum + " " + type + " "+ inputs);
+        System.out.print(outputNum + " " + type.toUpperCase());
+		for(int i : inputs){
+			System.out.print(" " + i);
+		}
+		System.out.println("");
     }
 
     public String getString(){

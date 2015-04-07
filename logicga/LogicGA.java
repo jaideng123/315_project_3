@@ -232,7 +232,7 @@ public class LogicGA {
         int current_result;
         int numRuns = 0;
         while (!solutionFound){
-            if(randInt(1,1000) == 1 && numRuns > 1000) {//Doomsday
+            if(randInt(1,10000) == 1 && numRuns > 1000) {//Doomsday
                 System.out.println("\nApocalypse Now!");
                 p = select(p, (int) (POP_SIZE * .5));
                 numRuns = 0;

@@ -115,11 +115,11 @@ public class Circuit implements Comparable<Circuit> {
         		testCircuit(s);
         		
         		
-        		fitness = 10000 * ((s.outputs[0].length*s.outputs.length) - numGoalsReached) + (100000 * nots)+ (1000/genes.size());
+        		fitness = 10000 * ((s.outputs[0].length*s.outputs.length) - numGoalsReached) + (100000 * nots)+ (10*genes.size());
         		
         	}else{
 	            testCircuit(s);
-	            fitness = 1000000 * (s.outputs[0].length*s.outputs.length-numGoalsReached) + 10000 * (calculateNots()) + 10 * (genes.size() - numNots);
+	            fitness = 1000000 * (s.outputs[0].length*s.outputs.length-numGoalsReached) + 10000 * (calculateNots()) + 10 * (genes.size());
         	}
         }
         return fitness;
