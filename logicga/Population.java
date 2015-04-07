@@ -11,6 +11,8 @@ import java.util.Vector;
 public class Population {
 //    Circuit[] population;
     PriorityQueue<Circuit> population;
+    int min;
+    int max;
     public Population(){
         population = new PriorityQueue<Circuit>();
         
@@ -35,6 +37,11 @@ public class Population {
     	Arrays.sort(newArray);
     	return newArray[newArray.length-1].fitness;
     }
+    public void setBounds(){
+    	min = lowestFitness();
+    	max = highestFitness();
+    }
+    
     //determines quality of population
     public double getQuality(){
     	int fmax = highestFitness();
