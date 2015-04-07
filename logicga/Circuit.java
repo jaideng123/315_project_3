@@ -19,9 +19,9 @@ import java.util.Scanner;
 public class Circuit implements Comparable<Circuit> {
     Vector<Gene> genes;
     String aFile;
-    int numNots = 0;
+    int numNots;
     boolean simulated = false;
-    int numGoalsReached = 0;
+    int numGoalsReached=0;
     int fitness;
 
     
@@ -31,7 +31,7 @@ public class Circuit implements Comparable<Circuit> {
      //Mutates circuit by either adding a gate or mutating a gene
      public void mutate() {
     	 
-         int mutation = randInt(1, 4);
+         int mutation = randInt(1, 5);
          int output;
          Vector<Integer> newInputs = new Vector<Integer>();
          switch (mutation) {
@@ -63,7 +63,7 @@ public class Circuit implements Comparable<Circuit> {
              //change a gene
              case 4: {
             	 calculateNots();
-                 int index = randInt(3, genes.size() - 1);
+                 int index = randInt(2, genes.size() - 1);
                  if (genes.elementAt(index).type == "Not")
                      numNots--;
                  if (genes.elementAt(index).type != "None")//dont touch none gates
@@ -77,17 +77,59 @@ public class Circuit implements Comparable<Circuit> {
                  }
                  break;
              }
-             //shuffle genes
+             //swap gates
              case 5:{
-            	 int r1 = randInt(2,genes.size()-1);
-            	 int r2 = randInt(2,genes.size()-1);
-            	
-            	 Gene one = genes.get(r1);
-            	 Gene two = genes.get(r2);
-            	 genes.get(r1).inputs = two.inputs;
-            	 genes.get(r1).type = two.type;
-            	 genes.get(r2).inputs = one.inputs;
-            	 genes.get(r2).type = one.type;
+            	 int r1 = 0;
+            	 int r2 = 0;
+            	 int num = randInt(1,50);
+            	 for(int i = 0;i<num;i++){
+	            	 r1 = randInt(2,genes.size()-1);
+	            	 r2 = randInt(2,genes.size()-1);
+	            
+	            	 Gene one = genes.get(r1);
+	            	 Gene two = genes.get(r2);
+	            	 if(((one.type=="And")||(one.type=="Or")) &&
+	            			 ((two.type == "And")||(two.type =="Or"))){
+		            	 //genes.get(r1).inputs = two.inputs;
+	            		
+	            		 
+		            	 genes.get(r1).type = two.type;
+		            	// genes.get(r2).inputs = one.inputs;
+		            	 genes.get(r2).type = one.type;
+		            	 
+		            	 
+	            	 }
+            	 }
+//            	 }else if(one.type=="Not"&&( (two.type == "And")||(two.type =="Or"))){
+//            		 
+//            		 genes.get(r1).inputs = two.inputs;
+//	            	 genes.get(r1).type = two.type;
+//	            	 //update inputs
+//	            	 int in = randInt(0,1);
+//	            	 int temp = one.inputs.get(0); //randomly select input to change to
+//		             one.inputs.clear();
+//		             one.inputs.addElement(temp);
+//		             
+//		             //swap types
+//            		 genes.get(r2).type = one.type;
+//            		 genes.get(r2).inputs = one.inputs;
+//            		 
+//            	 }else if(two.type=="Not"&&( (one.type == "And")||(one.type =="Or"))){
+//            		 genes.get(r2).inputs = one.inputs;
+//            		 //swap types
+//	            	 genes.get(r2).type = one.type;
+//	            	 
+//	            	 //update inputs
+//	            	 int in = randInt(0,1);
+//	            	 int temp = two.inputs.get(0); //randomly select input to change to
+//		             two.inputs.clear();
+//		             two.inputs.addElement(temp);
+//		             
+//		             //swap types
+//            		 genes.get(r1).type = two.type;
+//            		 genes.get(r1).inputs = two.inputs;
+//            		 
+//            	 }
             	
             	 break;
              }
@@ -100,26 +142,46 @@ public class Circuit implements Comparable<Circuit> {
     public int calculateFitness(Simulator s, int choice){
         //cache result if recalculation isnt needed
         if(!simulated) {
+        	
         	if(choice == 2){
         		
-        		int nots = calculateNots();
+        		double nots = calculateNots();
+        		testCircuit(s);
+        		double solution = (s.outputs[0].length*s.outputs.length) - numGoalsReached;
+        		int size = genes.size();
+        		
+        		
+//        		if(solution<=2 && nots>2){
+//        			nots = 10;
+//        		}
+//        		if(numNots ==2){
+//        			nots = .02;
+//        		}
+//        		if(size<=30){
+//        			size= 1;
+//        		}
         		
         		
         		if(numNots != 2)
-        			nots = numNots * 2;
+        			nots = numNots * 1.1;
         		if(numNots == 1){
         			nots = 3;
         		}
         		if(numNots == 0)
-        			nots = 1;
-        		testCircuit(s);
+        			nots = 3;
         		
         		
-        		fitness = 10000 * ((s.outputs[0].length*s.outputs.length) - numGoalsReached) + (100000 * nots)+ (10*genes.size());
+//        		if(solution<=2 && nots>2){
+//        			nots = 10;
+//        		}
+        		fitness = (int)(10000 * (solution) + (100000 * nots)+ (10000/(size/2)));
+        		
+//        		if(solution==0&&nots==2)
+//        			Print();
         		
         	}else{
 	            testCircuit(s);
-	            fitness = 1000000 * (s.outputs[0].length*s.outputs.length-numGoalsReached) + 10000 * (calculateNots()) + 10 * (genes.size());
+	            fitness = 1000000 * (s.outputs[0].length*s.outputs.length-numGoalsReached) + 10000 * (calculateNots()) + 10 * (genes.size() - numNots);
         	}
         }
         return fitness;
@@ -321,6 +383,14 @@ public class Circuit implements Comparable<Circuit> {
         numGoalsReached = s.simulate(this);
         simulated = true;
         return numGoalsReached;
+    }
+    public double getQuality(int fit, int fmax, int fmin){
+    	
+    	
+    	double q = fit/(Math.sqrt(Math.pow(fmax, 2)+Math.pow(fmin, 2)));
+    	
+    	return q;
+    	
     }
 
 }
