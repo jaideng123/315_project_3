@@ -1,18 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package logicga;
 
 import java.util.Random;
 import java.util.Vector;
 
-/**
- *
- * @author Eric C C
- */
+//Holds each Gate, along with it's inputs and output
 public class Gene {
     int outputNum;
     String type;

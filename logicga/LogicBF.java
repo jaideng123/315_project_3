@@ -1,14 +1,10 @@
 package logicga;
 
-import java.io.IOException;
 import java.util.Scanner;
 import java.util.Vector;
-
 import utility.CombinatoricException;
-/**
-*
-* @author Si Jine Roh
-*/
+
+//Breadth first search
 public class LogicBF {
 
 	public static Circuit copyCircuit(Circuit c) {
@@ -141,7 +137,7 @@ public class LogicBF {
 
 		// assume that all circuits from first level have failed
 		Vector<Node> temp_level_1 = first_level;
-		GraphFrame graph = new GraphFrame("Breadt First Search","Level of Tree","Gates Checked");
+		GraphFrame graph = new GraphFrame("Breadth First Search","Level of Tree","Gates Checked");
 		graph.drawGraph(all_nodes.size()-1,all_nodes.get(all_nodes.size()-1).size());
 		while (!is_done) {
 			System.out.println("\nEntering next level");
@@ -430,7 +426,7 @@ public class LogicBF {
 				break;
 			default:
 				System.out.println("Pick different number.");
-			} // end of switch case 
-		} // end of infinite while loop 
-	} // end of main function
-} // end of class
+			}
+		}
+	}
+}

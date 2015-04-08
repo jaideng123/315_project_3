@@ -37,13 +37,14 @@ public class Simulator {
         java.util.Arrays.fill(matched,false);
         //look at each column of results
         for (int i = 0; i < circ.genes.size()*2; i++) {
-            //look at each output value we're looking for
+            //check each output value we're looking for
             for (int j = 0; j < outputs[0].length; j++) {
                 if(!matched[j]) {
                     boolean is_match = true;
                     int match_num = outputs.length;
                     for (int k = 0; k < results.size(); k++) {
                         if (results.elementAt(k)[i] != (outputs[k][j] ? 1 : 0)) {
+                            //mismatch found
                             is_match = false;
                             match_num--;
                         }
@@ -102,6 +103,8 @@ public class Simulator {
                 else
                     values[current.outputNum] = 1;
             }
+            else
+                System.out.println("Bad Gate");
         }
         if (num_inputs != inputs[0].length) {
             return new int[]{};

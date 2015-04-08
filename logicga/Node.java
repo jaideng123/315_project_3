@@ -2,11 +2,7 @@ package logicga;
 
 import java.util.Vector;
 
-/**
-*
-* @author Si Jine Roh
-*/
-
+//holds circuits for breadth first search
 public class Node {
 	
 	Circuit circuit = new Circuit();

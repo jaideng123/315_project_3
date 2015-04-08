@@ -8,7 +8,6 @@ import java.util.Vector;
  * @author Eric C C
  */
 public class Population {
-//    Circuit[] population;
     PriorityQueue<Circuit> population;
     public Population(){
         population = new PriorityQueue<Circuit>();
@@ -28,9 +27,6 @@ public class Population {
     public void add(Circuit a){
     	population.add(a);
     }
-//    public Circuit reproduction() {
-//        
-//    }
     
     public int getSize(){
         return population.size();

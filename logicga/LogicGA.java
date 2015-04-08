@@ -1,27 +1,19 @@
 
 package logicga;
 
-import java.io.*;
-import java.security.PublicKey;
-import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Vector;
 import java.lang.Math;
 
-/**
- *
- * @author Eric C C
- */
+//Genetic Algorithm
 public class LogicGA {
     static int POP_SIZE = 1000;
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.out.println("Breadth First Search START");
-
-        // real full adder inputs
+        //Set up Truth tables for different circuits
         boolean[][] fulladder_inputs = new boolean[8][3];
         fulladder_inputs[0][0] = false;
         fulladder_inputs[0][1] = false;
@@ -336,9 +328,6 @@ public class LogicGA {
         return newPop;
     }
     public static int randInt(int min, int max) {
-
-        // NOTE: Usually this should be a field rather than a method
-        // variable so that it is not re-seeded every call.
         Random rand = new Random();
 
         // nextInt is normally exclusive of the top value,
@@ -394,43 +383,4 @@ public class LogicGA {
         }
         return g;
     }
-    public static void writeMetadata(int top){
-
-        File file = new File("Metadata.txt");
-        try{
-            if(file.exists()==false){
-                System.out.println("New Metadata file created");
-                file.createNewFile();
-            }
-            PrintWriter writer = new PrintWriter(new FileWriter(file,true));
-
-            Integer value =(Integer) top;
-            writer.append(value.toString() + '\n');
-
-
-            writer.close();
-        }catch(IOException e){
-            System.out.println("Could not open file!");
-        }
-    }
-
-    public static void writeRandomFiles(int popSize){
-        for (int i = 0 ; i < popSize; i++){
-            Circuit buffer = new Circuit();
-            Vector<Integer> tempInsert = new Vector<Integer>();
-            tempInsert.add(1);
-            buffer.addGate(1 , "None", tempInsert);
-            buffer.addGene(randomGate(buffer));
-            buffer.addGene(randomGate(buffer));
-            buffer.addGene(randomGate(buffer));
-            buffer.addGene(randomGate(buffer));
-            buffer.addGene(randomGate(buffer));
-            buffer.addGene(randomGate(buffer));
-            buffer.addGene(randomGate(buffer));
-            buffer.writeToFile(i);
-        }
-    }
-
-    //public
-    
 }

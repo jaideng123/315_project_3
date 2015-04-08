@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package logicga;
 
@@ -10,12 +5,8 @@ import java.util.*;
 import java.io.*;
 import java.util.Vector;
 import java.util.Scanner;
-/**
- *
- * @author Eric C C
- * 
- */
- // need Comparable for natural ordering for a Priority Queue
+
+//Holds a collection of Genes which constitute a logic circuit
 public class Circuit implements Comparable<Circuit> {
     Vector<Gene> genes;
     String aFile;
@@ -90,86 +81,13 @@ public class Circuit implements Comparable<Circuit> {
         }
         return fitness;
     }
-    public void getFromFile(int populationIndex)throws IOException{
-        //Fix for generic case
-        // path should be change.
-        String path = "./testcircuit/Circuit"+populationIndex+".txt";
-        FileReader fr = new FileReader(path);
-        BufferedReader textReader = new BufferedReader(fr);
-        
-        //Vector<Integer> inputGenes = new Vector<Integer>();
-        String line;
-        while( (line = textReader.readLine()) != null){
-        	
-//            inputGenes.add(Integer.parseInt(line));
-            Scanner s = new Scanner(line);
-            //inputGenes.add(s.nextInt());
-            int outputNum = 0 ;
-            String type = null;
-            Vector<Integer> inputs = new Vector<Integer>();
-            
-            //Parsing each line for INT STRING [INT(S)]
-            if(s.hasNextInt()){
-                outputNum = s.nextInt();
-                if(s.hasNext()){
-                    type = s.next();
-                    while(s.hasNextInt()){
-                        inputs.add(Integer.parseInt(s.next()));
-                   }
-               }
-           }
-           
-           //The genes will be stored in the order they appear in text
-           addGate(outputNum,type,inputs);
-//           genes.add(new Gene(outputNum,type,inputs));
-//           if (type.equals("Not")) {
-//        	   n_not ++;
-//           }
-       }
-        textReader.close();
-       
-    }
 
-    public void writeToFile(int populationIndex){
-        BufferedWriter writer = null;
-        try {
-            //create a temporary file
-            String fileName = "Circuit"+populationIndex+".txt";
-            File logFile = new File(fileName);
-
-            // This will output the full path where the file will be written to...
-            //System.out.println(logFile.getCanonicalPath());
-
-            writer = new BufferedWriter(new FileWriter(logFile));
-
-            for(Gene gene : genes){
-                writer.write(gene.getString()+'\n');
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                // Close the writer regardless of what happens...
-                writer.close();
-            } catch (Exception e) {
-            }
-        }
-
-    }
-    
     public void Print(){
         for(int i =0 ; i < genes.size() ;i++ ){
             genes.elementAt(i).Print();
         }
     }
-    public void addGene(Gene gene){
-        genes.add(gene);
-    }
-    /**
-     * I added functions below. Please revise them.
-     * Sijine 
-     */
+
     public boolean addGate(int output, String gateType, Vector<Integer> input){
     	if (gateType.equals("Not") && numNots == 2 || exists(gateType,input)) {
     		return false;

@@ -2,7 +2,6 @@ package logicga;
 
 //import com.objectwave.utility.*;
 import java.util.*;
-
 import utility.Combinations;
 import utility.Combinatoric;
 import utility.CombinatoricException;
@@ -22,16 +21,6 @@ public class MultiCombinations {
             }
         }
         comb = new Combinations(myObjects, k);
-    } // constructor
- 
-    public void print() {
-		while (hasMoreElements()) {
-			for (int i = 0; i < nextElement().length; i++) {
-				System.out.print(Integer.parseInt(nextElement()[i].toString())
-						+ " ");
-			}
-			System.out.println();
-		}
     }
     
     boolean hasMoreElements() {
