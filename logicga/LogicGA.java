@@ -198,7 +198,7 @@ public class LogicGA {
         System.out.print("Choose one: ");
         Scanner in = new Scanner(System.in);
         int num = in.nextInt();
-        GraphFrame graph = new GraphFrame("Graph");
+        GraphFrame graph = new GraphFrame("Genetic Algorithm","Number of Runs","Lowest Fitness Value");
 
         Simulator sim = null;
 

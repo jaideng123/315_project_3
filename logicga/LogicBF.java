@@ -141,7 +141,8 @@ public class LogicBF {
 
 		// assume that all circuits from first level have failed
 		Vector<Node> temp_level_1 = first_level;
-		
+		GraphFrame graph = new GraphFrame("Breadt First Search","Level of Tree","Gates Checked");
+		graph.drawGraph(all_nodes.size()-1,all_nodes.get(all_nodes.size()-1).size());
 		while (!is_done) {
 			System.out.println("\nEntering next level");
 			Vector<Node> temp_level_2 = new Vector<Node>();
@@ -156,7 +157,6 @@ public class LogicBF {
 					if (original_node.blocked == false) {
 						addNot(original_circuit, original_output, temp_level_2);
 					}
-
 					addGates("And", original_circuit, sim, temp_level_2);
 					addGates("Or", original_circuit, sim, temp_level_2);
 				}
@@ -174,6 +174,7 @@ public class LogicBF {
 			//test all circuits in current level
 			current_level = all_nodes.size()-1;
 			System.out.println("Current Level: "+current_level + " has " + all_nodes.get(current_level).size());
+			graph.drawGraph(all_nodes.size()-1,all_nodes.get(all_nodes.size()-1).size());
 			for (int i = 0; i < all_nodes.get(current_level).size(); i++) {
 				int sim_result = sim.simulate(all_nodes.get(current_level).get(i).circuit);
 				if (sim_result == (sim.outputs.length * sim.outputs[0].length)) {

@@ -33,20 +33,26 @@ public class GraphFrame extends JFrame {
 	Container contentPane;
 	XYSeries series = new XYSeries("XYGraph");
 	XYSeriesCollection dataset = new XYSeriesCollection();
-	JFreeChart chart = ChartFactory.createXYLineChart(
-			"Genetic Algorithm", // Title
-			"Total Generations", // x-axis Label
-			"Best Fitness", // y-axis Label
-			dataset, // Dataset
-			PlotOrientation.VERTICAL, // Plot Orientation
-			true, // Show Legend
-			true, // Use tooltips
-			false // Configure chart to generate URLs?
-	);
+	JFreeChart chart;
 	ChartPanel cp = new ChartPanel(chart);
+	String xAxis;
+	String yAxis;
+	String title;
 	private Vector<Integer> points = new Vector<Integer>();
-	public GraphFrame(String title){
-		super(title);
+	public GraphFrame(String t, String x, String y){
+		title = t;
+		xAxis = x;
+		yAxis = y;
+		chart = ChartFactory.createXYLineChart(
+				title, // Title
+				xAxis, // x-axis Label
+				yAxis, // y-axis Label
+				dataset, // Dataset
+				PlotOrientation.VERTICAL, // Plot Orientation
+				true, // Show Legend
+				true, // Use tooltips
+				false // Configure chart to generate URLs?
+		);
 		dataset.addSeries(series);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	    setBounds(0,0,screenSize.width, screenSize.height);
@@ -92,9 +98,9 @@ public class GraphFrame extends JFrame {
 				dataset = new XYSeriesCollection();
 				dataset.addSeries(series);
 				chart = ChartFactory.createXYLineChart(
-						"Genetic Algorithm", // Title
-						"Total Generations", // x-axis Label
-						"Best Fitness", // y-axis Label
+						title, // Title
+						xAxis, // x-axis Label
+						yAxis, // y-axis Label
 						dataset, // Dataset
 						PlotOrientation.VERTICAL, // Plot Orientation
 						true, // Show Legend
