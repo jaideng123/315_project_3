@@ -5,41 +5,7 @@ package utility;
  * The Combinations class provides an enumeration of all subsets of a group of 
  * n objects taken r at a time. The constructor for Combinations accepts the group as 
  * an array of Objects, along with the number to select.
- * <p>
- * For example, to choose 3 boys from a list of 5, begin with an array
- * of names: 
- * <p>
- * <blockquote><pre>
- * Object[] boys = {�Alfred�, �Ben�, �Carl�, �Drew�, �Edwin�};
- * </pre></blockquote>
- * To see all combinations of these 5 names taken 3 at a time, create 
- * and use a Combinations enumeration: 
- * <blockquote><pre>
- *  Combinations c = new Combinations(boys, 3);
- * while (c.hasMoreElements()) {
- *  Object[] combo = (Object[])c.nextElement();
- *  for (int i = 0; i < combo.length; i++) {
- *   System.out.print((String)combo[i] + � �);
- * }
- * System.out.println();
- * }
- * </pre></blockquote>
- * <p>
- * This will print out a 10 line list: 
- * <blockquote><pre>
- * Alfred Ben Carl 
- * Alfred Ben Drew 
- * Alfred Ben Edwin 
- * Alfred Carl Drew 
- * Alfred Carl Edwin 
- * Alfred Drew Edwin 
- * Ben Carl Drew 
- * Ben Carl Edwin 
- * Ben Drew Edwin 
- * Carl Drew Edwin 
- * </pre></blockquote>
- * 
- */
+**/
 public class Combinations implements java.util.Enumeration
 {
     private Object[] inArray;
@@ -49,12 +15,7 @@ public class Combinations implements java.util.Enumeration
     /**
     * Create a Combination to enumerate through all subsets of the 
     * supplied Object array, selecting �m� at a time.
-    *
-    * @param Object[] inArray the group to choose from
-    * @param m int the number to select in each choice
-    * @exception CombinatoricException if m is greater than 
-    * the length of inArray, or less than 0.
-    */
+    **/
     public Combinations(Object[] inArray, int m) throws CombinatoricException
     {
         this.inArray = inArray;
